@@ -1,0 +1,73 @@
+{
+  "pair_id": "DB3-0004",
+  "domain": "materials",
+  "language": "zh",
+  "requirement_text": "类金刚石薄膜硬度要高：压入方向的等效弹性模量不低于 400 GPa（厚度 1 μm，作用体积取 1 μm³）。",
+  "requirement_structured": {
+    "property_id": "stiffness",
+    "target_value": {
+      "equivalent_modulus_Pa": 400000000000.0
+    },
+    "rv_hint": "microstate_gibbs",
+    "constraints": [
+      "T_K = 300",
+      "V_m3 = 1e-18"
+    ],
+    "ambiguity_flags": [],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_hint": "lower",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed"
+  },
+  "rule_ids": [
+    "R-STIFF-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "C_req · V / (k_B T)"
+    }
+  },
+  "worked_example": {
+    "setup": "DLC 薄膜，C=400 GPa，V=1 μm³，T=300 K",
+    "given": {
+      "C_req": {
+        "value": 400000000000.0,
+        "unit": "Pa",
+        "is_bridge_constant": true
+      },
+      "V": {
+        "value": 1e-18,
+        "unit": "m^3",
+        "is_bridge_constant": true
+      },
+      "k_B_T": {
+        "value": 4.14e-21,
+        "unit": "J",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "q1 ≥ C·V/(k_B T) = 4e11 × 1e-18 / 4.14e-21 = 9.7e13",
+    "result": "q1 ≥ 9.7e13（无量纲，1/应变²）",
+    "reference_scale": "微米级作用体积下硬质膜 q1 约 1e12–1e14；体积越小 q1 越小（V 进分子，热涨落自平均减弱）"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-STIFF-001 [定理]、§2.3.5 例 2（线性弹性谐振近似）",
+    "md/information mechanics derivations.md §29 涨落-耗散定理与信息理想气体（约 L1120–1147）：能量涨落-响应对应",
+    "md/information mechanics derivations.md §1 定理 1.3（Cramér–Rao）：度规 = 可测量性的界限",
+    "勘误记录（2 处）：①arch §2.3.3 桥接式 C_eff=(V/k_B T)·g_λλ 与同节下界 q1≥(k_B T/V)·C_req 互为倒数，按涨落-响应定理标准形式 g_λλ=C·V/(k_B T)（即 C=(k_B T/V)·g）取值，与 DB1 elastic/harmonic 族解析指纹 g=k/(k_B T) 一致；②rules.yaml R-STIFF-001 q_update.expr 初版误沿 arch 错误方向 k_B T·C_req/V（量纲 J²/m⁶ 非无量纲），经 A 角色复核发现，已修正为 C_req·V/(k_B T)（量纲自洽）。详见 db3/rules/rules.yaml R-STIFF-001 bridge_law.note"
+  ],
+  "strictness": "定理",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

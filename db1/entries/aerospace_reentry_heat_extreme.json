@@ -1,0 +1,54 @@
+{
+  "system_id": "aerospace_reentry_heat_extreme",
+  "domain": "aerospace",
+  "name": "再入热流极值",
+  "family": "frechet",
+  "equations": {
+    "latex": "p(x) = \\frac{\\alpha}{s}(x/s)^{-1-\\alpha} e^{-(x/s)^{-\\alpha}}",
+    "sympy": "p = (shape/scale)*(x/scale)**(-1-shape)*exp(-(x/scale)**(-shape))"
+  },
+  "parameters": [
+    {
+      "name": "shape",
+      "symbol": "\\alpha",
+      "range": [
+        0.5,
+        5.0
+      ],
+      "default": 2.4
+    },
+    {
+      "name": "scale",
+      "symbol": "s",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.3
+    }
+  ],
+  "channel_template": "CT-FRECHET-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "((1-EulerGamma)**2+pi**2/6)/shape**2 + shape**2/scale**2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "pi**2/(6*scale**2)",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "极值理论；aerospace 域实例（程序化生成，表驱动）",
+  "scan_param": "shape",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

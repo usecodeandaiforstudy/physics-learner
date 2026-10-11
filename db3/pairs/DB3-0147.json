@@ -1,0 +1,59 @@
+{
+  "pair_id": "DB3-0147",
+  "domain": "traffic",
+  "language": "en",
+  "requirement_text": "The adaptive controller must cope with at least 10 traffic scenarios.",
+  "requirement_structured": {
+    "property_id": "adaptability",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "n_environments_count": 10
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-ADAPT-001"
+  ],
+  "info_metric_vector": {
+    "q5_channel_capacity": {
+      "direction": "lower_bound",
+      "expr": "ln(10) = 2.30 nats",
+      "note": "表驱动生成（traffic 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "The adaptive controller must cope with at least 10 traffic scenarios.",
+    "given": {
+      "n_environments_count": {
+        "value": 10,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "场景数下界 → ln(M)",
+    "result": "q5 ≥ 2.30 nats",
+    "reference_scale": "交通场景适应参考尺度：1–3 nats"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-ADAPT-001",
+    "md/information mechanics derivations.md（对应规则推导）",
+    "traffic 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "类比",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-04",
+    "reviewer": "user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

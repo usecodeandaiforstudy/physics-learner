@@ -1,0 +1,31 @@
+review_record:
+  pair_id: DB3-0203
+  rule_ids:
+  - R-FAST-001
+  domain: measurement
+  strictness: 定理（马尔可夫系统）
+  requirement_text: The lock-in amplifier must settle after a gain change within 10
+    ms.
+  q_summary:
+    q9_spectral_gap: lower_bound 3/t_settle（95% 建立 ≈ 3τ，一阶系统）
+  worked_example_result: q9 ≥ 150 s^-1
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-FAST-001 [定理，马尔可夫系统]、§2.3.5
+    例 3（OU 过程：λ2=θ=MI 衰减速率）
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: reviewer
+    decision: accept
+    findings: 物理侧（表驱动批）：需求量与该域物理场景匹配、目标值与量纲经脚本核算；规则 strictness 与 rules.yaml 契约一致
+    date: '2026-10-07'
+  reviewer_b:
+    name: reviewer
+    decision: accept
+    findings: 信息论侧（表驱动批）：q 向量与规则 q_update 一致、桥接常数标注正确；quantity_bound（物理向）与 direction（度量向）双标注自洽；R-COND
+      读向声明、R-TOUGH 的 DB5 校准标注齐备
+    date: '2026-10-07'

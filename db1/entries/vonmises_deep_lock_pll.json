@@ -1,0 +1,43 @@
+{
+  "system_id": "vonmises_deep_lock_pll",
+  "domain": "electromagnetism",
+  "name": "深锁相环（κ=20）",
+  "family": "vonmises",
+  "equations": {
+    "latex": "p(\\theta) = e^{\\kappa\\cos(\\theta-\\mu)}/(2\\pi I_0(\\kappa))",
+    "sympy": "p = exp(kappa*cos(theta-mu))/(2*pi*besseli(0, kappa))"
+  },
+  "parameters": [
+    {
+      "name": "mu",
+      "symbol": "\\mu",
+      "range": [
+        -3.14,
+        3.14
+      ],
+      "default": 0.0
+    },
+    {
+      "name": "kappa",
+      "symbol": "\\kappa",
+      "range": [
+        0.1,
+        10.0
+      ],
+      "default": 20.0
+    }
+  ],
+  "channel_template": "CT-VONMISES-001",
+  "fingerprint_expectation": [],
+  "strictness_level": "定理",
+  "source_ref": "Gardner 2005, Phaselock Techniques",
+  "scan_param": "kappa",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

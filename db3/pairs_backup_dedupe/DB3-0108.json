@@ -1,0 +1,59 @@
+{
+  "pair_id": "DB3-0108",
+  "domain": "marine",
+  "language": "en",
+  "requirement_text": "The mooring system must keep at least 20% margin below the snap-load limit.",
+  "requirement_structured": {
+    "property_id": "stability",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "delta_dimensionless": 0.2
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-STABLE-001"
+  ],
+  "info_metric_vector": {
+    "q8_stability_margin": {
+      "direction": "lower_bound",
+      "expr": "delta = 0.2（相对冲击载荷限的裕度）",
+      "note": "表驱动生成（marine 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "The mooring system must keep at least 20% margin below the snap-load limit.",
+    "given": {
+      "delta_dimensionless": {
+        "value": 0.2,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "裕度下界",
+    "result": "q8 ≥ 0.2",
+    "reference_scale": "系泊裕度参考尺度：0.1–0.5"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-STABLE-001",
+    "md/information mechanics derivations.md（对应规则推导）",
+    "marine 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "推导/类比",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "pending",
+    "anchor_eligible": false,
+    "review_date": null,
+    "reviewer": null
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

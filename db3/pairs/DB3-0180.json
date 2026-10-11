@@ -1,0 +1,59 @@
+{
+  "pair_id": "DB3-0180",
+  "domain": "pulp_paper",
+  "language": "en",
+  "requirement_text": "The moisture sensor must hold its resolution at 0.03 under humidity drift.",
+  "requirement_structured": {
+    "property_id": "robustness",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "sigma_dimensionless_fraction": 0.03
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-ROBUST-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "1/(1·9e-4) = 1111（n=1）",
+      "note": "表驱动生成（pulp_paper 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "The moisture sensor must hold its resolution at 0.03 under humidity drift.",
+    "given": {
+      "sigma_dimensionless_fraction": {
+        "value": 0.03,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "信号方向 Fisher 下界（干扰=湿度漂移）",
+    "result": "q1 ≥ 1111",
+    "reference_scale": "纸浆传感鲁棒性参考尺度：1e2–1e4"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-ROBUST-001",
+    "md/information mechanics derivations.md（对应规则推导）",
+    "pulp_paper 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-04",
+    "reviewer": "user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

@@ -1,0 +1,45 @@
+{
+  "system_id": "2lvl_dimer_binding",
+  "domain": "materials",
+  "name": "二聚体结合占据",
+  "family": "two_level",
+  "equations": {
+    "latex": "p = \\frac{1}{1+e^{\\Delta E/kT}}",
+    "sympy": "p = 1/(1+exp(delta_E/kT))"
+  },
+  "parameters": [
+    {
+      "name": "p",
+      "symbol": "p",
+      "range": [
+        0.1,
+        0.9
+      ],
+      "default": 0.6
+    }
+  ],
+  "channel_template": "CT-TWOLVL-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "1/(p*(1-p))",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "1/(p*(1-p))",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准统计力学（二能级占据）",
+  "scan_param": "p",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

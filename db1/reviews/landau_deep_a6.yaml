@@ -1,0 +1,28 @@
+review_record:
+  entry_system_id: landau_deep_a6
+  family: landau
+  domain: thermodynamics
+  scan_param: a
+  machine_gate:
+    schema_valid: true
+    convention_check: true
+    computability: true
+    analytic_compare: true
+    errors: []
+    warnings:
+    - 未提供 fingerprint_expectation，跳过解析对照
+  provenance_source: AI+verified
+  anchor_eligible: false
+  reviewer_a:
+    name: reviewer
+    decision: accept
+    findings: 同上；深阱 a=-6 真值 0.5202 nats
+    date: '2026-10-07'
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  final_destination: DB2
+  final_decision: accept
+  human_review_status: spot_checked

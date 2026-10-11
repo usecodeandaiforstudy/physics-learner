@@ -1,0 +1,29 @@
+review_record:
+  pair_id: DB3-0023
+  rule_ids:
+  - R-ADAPT-001
+  domain: measurement
+  strictness: 类比
+  requirement_text: 环境传感器要在 4 种工况（冬夏室内、室外、舱内）间自适应切换且不误判。
+  q_summary:
+    q5_channel_capacity: lower_bound ln(M)
+    q2_posterior_sharpness: upper_bound 0（det g ≤ 1，平坦极小）
+  worked_example_result: q5 ≥ 1.386 nats；q2 ≤ 0（后验宽容度大）
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-ADAPT-001 [类比]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

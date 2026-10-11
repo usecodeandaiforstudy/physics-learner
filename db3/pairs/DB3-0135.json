@@ -1,0 +1,59 @@
+{
+  "pair_id": "DB3-0135",
+  "domain": "pharmaceutical",
+  "language": "en",
+  "requirement_text": "The process window must hold at least 15% margin in freeze-dry cycle time.",
+  "requirement_structured": {
+    "property_id": "stability",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "delta_dimensionless": 0.15
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-STABLE-001"
+  ],
+  "info_metric_vector": {
+    "q8_stability_margin": {
+      "direction": "lower_bound",
+      "expr": "delta = 0.15（冻干周期裕度）",
+      "note": "表驱动生成（pharmaceutical 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "The process window must hold at least 15% margin in freeze-dry cycle time.",
+    "given": {
+      "delta_dimensionless": {
+        "value": 0.15,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "裕度下界",
+    "result": "q8 ≥ 0.15",
+    "reference_scale": "工艺窗口参考尺度：0.1–0.4"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-STABLE-001",
+    "md/information mechanics derivations.md（对应规则推导）",
+    "pharmaceutical 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "推导/类比",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-04",
+    "reviewer": "user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

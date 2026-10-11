@@ -1,0 +1,30 @@
+review_record:
+  pair_id: DB3-0027
+  rule_ids:
+  - R-TOUGH-001
+  domain: mechanics
+  strictness: 类比
+  requirement_text: 头盔缓冲层要耐冲击：吸能路径至少有 3 个亚稳塌缩模式，能垒不低于 4 nats。
+  q_summary:
+    q8_stability_margin: lower_bound E_req
+    q10_redundancy: increase >= 3 metastable basins
+  worked_example_result: q8 ≥ 4 nats；多谷 3 个
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-TOUGH-001 [类比]：须
+    DB5 校准后才可入 B v1 训练集
+  ambiguity_flags: []
+  requires_db5_calibration: true
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

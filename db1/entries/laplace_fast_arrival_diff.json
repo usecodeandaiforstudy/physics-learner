@@ -1,0 +1,45 @@
+{
+  "system_id": "laplace_fast_arrival_diff",
+  "domain": "stochastic_process",
+  "name": "快到达（窄分布）",
+  "family": "laplace",
+  "equations": {
+    "latex": "Z = X_1 - X_2,\\quad X_i \\sim \\mathrm{Exp}(\\lambda)",
+    "sympy": "Z = X1 - X2"
+  },
+  "parameters": [
+    {
+      "name": "rate",
+      "symbol": "\\lambda",
+      "range": [
+        0.1,
+        10.0
+      ],
+      "default": 5.0
+    }
+  ],
+  "channel_template": "CT-LAPLACE-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "2*rate^2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "rate^4",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准概率论（双指数差 = 拉普拉斯分布）",
+  "scan_param": "rate",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

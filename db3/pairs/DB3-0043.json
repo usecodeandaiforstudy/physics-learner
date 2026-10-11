@@ -1,0 +1,70 @@
+{
+  "pair_id": "DB3-0043",
+  "domain": "agriculture",
+  "language": "en",
+  "requirement_text": "The irrigation moisture front must traverse a 5 mm soil layer within 600 s.",
+  "requirement_structured": {
+    "property_id": "transport",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed",
+    "quantity_bound_note": "target 集内被约束的量是 front_time（t ≤ 600 s，上界）；κ 由 κ≈L²/t 派生，其「有下界」体现在 q7 的度量方向，不决定 target 的界（与 DB3-0001 同类的派生量陷阱，2026-10-02 自检发现）",
+    "target_value": {
+      "length_scale_m": 0.005,
+      "front_time_s": 600
+    },
+    "rv_hint": "diffusion_pde",
+    "constraints": [
+      "layer_thickness = 5 mm"
+    ],
+    "ambiguity_flags": [
+      "R-COND-001 二义性：文本未显式区分读向；缺省取读向(a) 热锋传播快（κ↑，q7↑），禁止静默选择（arch §2.3.8 第 2 条）"
+    ]
+  },
+  "rule_ids": [
+    "R-COND-001"
+  ],
+  "info_metric_vector": {
+    "q7_info_propagation_speed": {
+      "direction": "lower_bound",
+      "expr": "kappa_req/L，kappa_req ≈ L²/t = (5e-3)²/600 = 4.2e-8 m²/s → q7 ≈ 8.3e-6 m/s",
+      "reading": "a_heat_front_fast"
+    }
+  },
+  "worked_example": {
+    "setup": "灌溉水锋穿过 5 mm 土层，耗时 600 s",
+    "given": {
+      "L": {
+        "value": 0.005,
+        "unit": "m",
+        "is_bridge_constant": true
+      },
+      "front_time": {
+        "value": 600,
+        "unit": "s",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "κ_req ≈ L²/t = 4.17e-8 m²/s；q7 ≥ κ_req/L",
+    "result": "q7 ≥ 8.3e-6 m/s",
+    "reference_scale": "土壤输运 q7 参考尺度：1e-7–1e-4 m/s"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]",
+    "md/information mechanics derivations.md §4 逐模式 MI 与 DPI 裕度",
+    "农业域第 2 条需求（程序化生成，待人工复核）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-04",
+    "reviewer": "user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

@@ -1,0 +1,211 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://physics-learn.local/db3/pair.schema.json",
+  "title": "DB3 需求映射库种子对",
+  "description": "单个（需求文本 ↔ 信息指标 q 向量）种子对。一文件一对。初始状态 source=AI+drafted、human_review_status=pending、anchor_eligible=false；升格锚点唯一通道为用户全量双人复核。信息量单位 nats；sigma=标准差；物理单位只经桥接常数进入。",
+  "type": "object",
+  "required": [
+    "pair_id",
+    "domain",
+    "language",
+    "requirement_text",
+    "requirement_structured",
+    "rule_ids",
+    "info_metric_vector",
+    "worked_example",
+    "metric_rationale",
+    "strictness",
+    "provenance",
+    "rules_version",
+    "convention_version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "pair_id": {
+      "type": "string",
+      "pattern": "^DB3-\\d{4}$",
+      "description": "编号规则 DB3-XXXX，全局唯一"
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "mechanics",
+        "materials",
+        "thermal",
+        "control",
+        "measurement",
+        "electronics",
+        "communication",
+        "general"
+      ],
+      "description": "需求所属领域（可扩展，需评审后加入）；单领域占比 ≤ 40%"
+    },
+    "language": {
+      "type": "string",
+      "enum": ["zh", "en"],
+      "description": "需求文本语言；库级配比中文 ~75% / 英文 ~25%"
+    },
+    "requirement_text": {
+      "type": "string",
+      "minLength": 6,
+      "description": "自然语言需求原文（中文为主，附英文变体）"
+    },
+    "requirement_structured": {
+      "type": "object",
+      "description": "槽位化结构需求（arch §2.3.6）",
+      "required": [
+        "property_id",
+        "direction",
+        "target_value",
+        "rv_hint",
+        "constraints",
+        "ambiguity_flags"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "property_id": {
+          "type": ["string", "null"],
+          "enum": [
+            "stiffness",
+            "precision",
+            "response_speed",
+            "transport",
+            "robustness",
+            "stability",
+            "adaptability",
+            "toughness",
+            "unmapped",
+            null
+          ],
+          "description": "必须在规则本体库 ontology_property_id 枚举中"
+        },
+        "direction": {
+          "type": ["string", "null"],
+          "enum": ["bound_below", "bound_above", null],
+          "description": "目标量方向；UNMAPPED 对为 null"
+        },
+        "target_value": {
+          "type": "object",
+          "description": "目标值（键须与规则 target_units_accepted 量纲匹配）",
+          "additionalProperties": { "type": ["number", "string"] }
+        },
+        "rv_hint": {
+          "type": ["string", "null"],
+          "description": "随机变量提示，如 microstate_gibbs / markov_chain / field_time_slices"
+        },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "环境/工况约束，如 temperature_K <= 400"
+        },
+        "ambiguity_flags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "R-COND-001 对必填非空；其余对可为空数组"
+        }
+      }
+    },
+    "rule_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^R-[A-Z]+-\\d{3}$" },
+      "description": "命中规则（可多条=组合需求）；UNMAPPED 对为 [\"R-NOMAP-000\"]"
+    },
+    "info_metric_vector": {
+      "type": ["object", "null"],
+      "description": "q 向量符号下界表达；UNMAPPED 对必须为 null（禁止携带）",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["direction", "expr"],
+        "additionalProperties": false,
+        "properties": {
+          "direction": {
+            "type": "string",
+            "enum": ["lower_bound", "upper_bound", "increase", "decrease", "approx"]
+          },
+          "expr": { "type": "string", "description": "符号表达式（含桥接常数符号）" },
+          "reading": {
+            "type": "string",
+            "description": "R-COND-001 读向标注：a_heat_front_fast / b_fine_structure_fidelity"
+          },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "worked_example": {
+      "type": ["object", "null"],
+      "description": "数值算例，参考尺度显式标注（每规则至少一个）；UNMAPPED 对为 null",
+      "required": ["setup", "given", "computation", "result", "reference_scale"],
+      "additionalProperties": false,
+      "properties": {
+        "setup": { "type": "string", "description": "物理场景设定" },
+        "given": {
+          "type": "object",
+          "description": "输入量（桥接常数须带 unit 字段）",
+          "additionalProperties": {
+            "type": ["object", "number", "string"],
+            "properties": {
+              "value": { "type": ["number", "string"] },
+              "unit": { "type": "string" },
+              "is_bridge_constant": { "type": "boolean" }
+            }
+          }
+        },
+        "computation": { "type": "string", "description": "代入计算过程" },
+        "result": { "type": "string", "description": "数值结果" },
+        "reference_scale": { "type": "string", "description": "该 q 分量的典型量级区间，显式标注" }
+      }
+    },
+    "metric_rationale": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "映射依据，必须引用理论文档章节（文献溯源红线）"
+    },
+    "strictness": {
+      "type": ["string", "null"],
+      "enum": ["定理", "定理（马尔可夫系统）", "推导", "推导/类比", "类比", "猜想", null],
+      "description": "多规则命中时取最弱（定理 > 推导 > 类比 > 猜想）；UNMAPPED 对为 null"
+    },
+    "requires_db5_calibration": {
+      "type": "boolean",
+      "default": false,
+      "description": "R-TOUGH-001 对必须为 true：未经 DB5 校准不得入 B v1 训练集"
+    },
+    "expected_unmapped_output": {
+      "type": "object",
+      "description": "仅 UNMAPPED 对使用：期望输出为 UNMAPPED 标志而非硬映射",
+      "required": ["flag", "nearest_rule_suggestions", "human_queue"],
+      "additionalProperties": false,
+      "properties": {
+        "flag": { "type": "string", "const": "UNMAPPED" },
+        "nearest_rule_suggestions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "最近邻规则建议（提示人工，禁止自动映射）"
+        },
+        "human_queue": { "type": "boolean", "const": true }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "human_review_status", "anchor_eligible", "review_date"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string", "enum": ["manual", "AI+drafted", "llm_expanded", "rl_validated"] },
+        "human_review_status": { "type": "string", "enum": ["pending", "in_review", "approved", "rejected"] },
+        "anchor_eligible": { "type": "boolean" },
+        "review_date": { "type": ["string", "null"], "format": "date" },
+        "reviewer": { "type": ["string", "null"] }
+      }
+    },
+    "rules_version": {
+      "type": "string",
+      "description": "起草时所用 db3/rules/rules.yaml 的 rules_version"
+    },
+    "convention_version": {
+      "type": "string",
+      "description": "符号约定版本（对齐 db1/conventions.yaml 的约定条目）"
+    }
+  }
+}

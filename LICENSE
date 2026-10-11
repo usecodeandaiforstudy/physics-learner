@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2026 usecodeandaiforstudy
+Copyright (c) 2026 信息力学跨域设计系统 (Information Mechanics Cross-Domain
+Design System) contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +20,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+数据与文档的许可（Data & Documentation License）
+
+`db1/` `db2/` `db3/` `db4/` `db5/` 下的**数据文件**与本仓库的**文档**
+（`README.md`、`HANDOVER.md`、`cross domain rl architecture plan.md`、
+`db3/conventions/`）采用 **Creative Commons Attribution 4.0 International
+(CC BY 4.0)** 许可：允许复制、分发、改编，须署名。
+
+**重要声明（数据性质）**：本仓库的数据条目**大多为 AI 生成并经机器门 +
+人工抽查/复核**（见每条目的 `provenance` 字段）。它们**不是**经过实验测量
+的权威数据，**不得**作为工程设计的唯一依据。详见 `README.md` 的
+「数据红线」一节。

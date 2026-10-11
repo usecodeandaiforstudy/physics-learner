@@ -1,0 +1,75 @@
+{
+  "pair_id": "DB3-0014",
+  "domain": "thermal",
+  "language": "zh",
+  "requirement_text": "隔热层要保住 1 mm 尺度的温度图样：1 s 观测窗内热模糊不超过该尺度。",
+  "requirement_structured": {
+    "property_id": "transport",
+    "target_value": {
+      "ell_req_m": 0.001,
+      "t_obs_s": 1
+    },
+    "rv_hint": "field_time_slices",
+    "constraints": [
+      "material = thermal_insulator"
+    ],
+    "ambiguity_flags": [
+      "R-COND-001 二义性：文本'保住温度图样'显式指向读向(b) 细结构保真（κ↓，q6 上界）；与读向(a) 方向相反，已记录，未静默选择"
+    ],
+    "metric_direction": "bound_above",
+    "direction": "bound_above",
+    "quantity_bound": "upper",
+    "quantity_bound_hint": "upper",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed"
+  },
+  "rule_ids": [
+    "R-COND-001"
+  ],
+  "info_metric_vector": {
+    "q6_correlation_length": {
+      "direction": "upper_bound",
+      "expr": "ell_req",
+      "reading": "b_fine_structure_fidelity",
+      "note": "热模糊关联长度 ξ(t)=√(2κt) ≤ ℓ_req，⟺ κ ≤ ℓ_req²/(2·t_obs)；严格半衰期式 κ ≤ ln2/(2k²·t_obs)，k=2π/ℓ_req"
+    }
+  },
+  "worked_example": {
+    "setup": "隔热层，ℓ_req=1 mm，t_obs=1 s（读向 b）",
+    "given": {
+      "ell_req": {
+        "value": 0.001,
+        "unit": "m",
+        "is_bridge_constant": true
+      },
+      "t_obs": {
+        "value": 1,
+        "unit": "s",
+        "is_bridge_constant": true
+      },
+      "kappa": {
+        "value": 5e-07,
+        "unit": "m^2/s",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "κ ≤ ℓ²/(2t) = (1e-3)²/2 = 5e-7 m²/s；ξ(1s)=√(2×5e-7×1)=1e-3 m ✓",
+    "result": "q6 ≤ 1e-3 m（κ ≤ 5e-7 m²/s）",
+    "reference_scale": "q6 参考尺度：隔热/热像应用 1e-4–1e-2 m"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]（二义性规则）、§2.3.5 例 1（一维热传导：逐模式 MI 与 DPI 裕度）",
+    "md/information mechanics derivations.md §9 锥结构与类光方程（q7=c_info 的 Fisher 锥依据）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

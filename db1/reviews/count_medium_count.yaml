@@ -1,0 +1,26 @@
+review_record:
+  entry_system_id: count_medium_count
+  family: poisson_count
+  domain: quantum
+  scan_param: rate
+  machine_gate:
+    schema_valid: true
+    convention_check: true
+    computability: true
+    analytic_compare: true
+    errors: []
+    warnings: []
+  provenance_source: AI+verified
+  anchor_eligible: false
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  final_destination: null
+  final_decision: null

@@ -1,0 +1,59 @@
+{
+  "pair_id": "DB3-0117",
+  "domain": "sports",
+  "language": "en",
+  "requirement_text": "The helmet liner must absorb at least 25 kJ before bottoming out.",
+  "requirement_structured": {
+    "property_id": "toughness",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "E_req_nats": 25
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-TOUGH-001"
+  ],
+  "info_metric_vector": {
+    "q7_info_propagation_speed": {
+      "direction": "lower_bound",
+      "expr": "E_req = 25 nats（吸能下界）",
+      "note": "表驱动生成（sports 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "The helmet liner must absorb at least 25 kJ before bottoming out.",
+    "given": {
+      "E_req_nats": {
+        "value": 25,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "吸能下界",
+    "result": "q ≥ 25 nats",
+    "reference_scale": "头盔吸能参考尺度：1e1–1e2 nats"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-TOUGH-001",
+    "md/information mechanics derivations.md（对应规则推导）",
+    "sports 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "类比",
+  "requires_db5_calibration": true,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "pending",
+    "anchor_eligible": false,
+    "review_date": null,
+    "reviewer": null
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

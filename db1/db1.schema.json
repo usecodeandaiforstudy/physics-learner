@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://physics-learn.local/db1/system.schema.json",
+  "title": "DB1 物理系统原始库条目",
+  "description": "单个物理系统的完整描述。所有字段录入即校验；枚举值与 db1/conventions.yaml 严格对应。任何变更约定需同步升级 convention_version。",
+  "type": "object",
+  "required": [
+    "system_id",
+    "domain",
+    "name",
+    "family",
+    "equations",
+    "parameters",
+    "provenance",
+    "strictness_level",
+    "convention_version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "system_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(_+[a-z0-9]+)+$",
+      "description": "命名规则 {family}__{variant}，小写+数字+下划线，段间以下划线分隔",
+      "examples": ["ou_process_1d", "heat_diffusion_1d_rod", "harmonic_oscillator__thermal_equilibrium"]
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "stochastic_process",
+        "diffusion",
+        "elasticity",
+        "electromagnetism",
+        "plasma",
+        "thermodynamics",
+        "quantum",
+        "mechanics",
+        "network",
+        "materials",
+        "signal"
+      ],
+      "description": "领域枚举（可扩展，但需评审后加入）"
+    },
+    "name": {
+      "type": "string",
+      "description": "人类可读的系统名称"
+    },
+    "family": {
+      "type": "string",
+      "description": "分布族/系统族 ID，引用 conventions.yaml 的 distribution_families 或系统族枚举表",
+      "examples": ["ou", "heat_diffusion", "linear_elastic"]
+    },
+    "equations": {
+      "type": "object",
+      "description": "控制方程，LaTeX + SymPy 可计算双形式",
+      "required": ["latex", "sympy"],
+      "additionalProperties": false,
+      "properties": {
+        "latex": { "type": "string" },
+        "sympy": { "type": "string", "description": "SymPy 可解析/可执行字符串" },
+        "sde": { "type": "string", "description": "若为随机过程，SDE 规范形式 dX = f dt + sigma dW（Itô）" }
+      }
+    },
+    "lagrangian": {
+      "type": "object",
+      "description": "若存在拉格朗日量",
+      "additionalProperties": false,
+      "properties": {
+        "latex": { "type": "string" },
+        "sympy": { "type": "string" }
+      }
+    },
+    "hamiltonian": {
+      "type": "object",
+      "description": "若存在哈密顿量",
+      "additionalProperties": false,
+      "properties": {
+        "latex": { "type": "string" },
+        "sympy": { "type": "string" }
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "symbol", "range"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "symbol": { "type": "string", "description": "LaTeX 符号，如 \\\\theta" },
+          "range": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": { "type": "number" },
+            "description": "[min, max] 闭区间"
+          },
+          "default": { "type": "number" },
+          "unit": { "type": "string", "description": "无量纲则省略；桥接常数必须填" },
+          "is_bridge_constant": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "boundary_conditions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "边界/初值条件列表"
+    },
+    "channel_template": {
+      "type": "string",
+      "description": "引用 §2.3.4 通道模板 ID，如 CT-DIFF-001",
+      "pattern": "^CT-[A-Z]+-\\d{3}$"
+    },
+    "analytic_invariants": {
+      "type": "array",
+      "description": "机器验证的解析不变量对照物（含文献引用）",
+      "items": {
+        "type": "object",
+        "required": ["name", "expression"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "expression": { "type": "string", "description": "LaTeX 或可计算表达式" },
+          "citation": { "type": "string", "description": "文献引用，如 Gardiner 2004, Ch.3" }
+        }
+      }
+    },
+    "fingerprint_expectation": {
+      "type": "array",
+      "description": "数值 vs 解析对照断言，验收门槛 100% 通过",
+      "items": {
+        "type": "object",
+        "required": ["quantity", "analytic"],
+        "additionalProperties": false,
+        "properties": {
+          "quantity": {
+            "type": "string",
+            "enum": ["fisher_trace", "fisher_det", "mi_profile", "ib_curve", "action_s"]
+          },
+          "analytic": { "type": "string", "description": "解析预期值表达式" },
+          "tol": { "type": "number", "default": 1.0e-3, "description": "相对容差" }
+        }
+      }
+    },
+    "simulator_ref": {
+      "type": "string",
+      "description": "数值模拟代码引用（如 Grad-Shafranov 求解器、扩散求解器）"
+    },
+    "source_ref": {
+      "type": "string",
+      "description": "原始来源引用（教科书/文献标题+章节）"
+    },
+    "license": {
+      "type": "string",
+      "description": "数据许可"
+    },
+    "strictness_level": {
+      "type": "string",
+      "enum": ["定理", "推导", "类比", "猜想"],
+      "description": "沿用理论文档四级标注"
+    },
+    "scan_param": {
+      "type": ["string", "null"],
+      "description": "参数扫描维度：该条目在 DB2 中展开扫描的参数名（须是 parameters 中的 name）；null 表示不扫描（仅 default 点）",
+      "examples": ["theta", "D", "omega", null]
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "verified_by", "review_date"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["textbook", "literature", "AI+verified"],
+          "description": "来源三级枚举；AI 生成物 source=AI+verified，不可作 DB3 锚点"
+        },
+        "generator_model": {
+          "type": "string",
+          "description": "若 AI 生成，记录模型+版本；人工录入则省略"
+        },
+        "verified_by": {
+          "type": "string",
+          "description": "已实际完成的机器验证方式（如 analytic_compare）；不得声明未做过的人工复核",
+          "examples": ["analytic_compare", "analytic_compare + machine_gates"]
+        },
+        "human_review_status": {
+          "type": "string",
+          "enum": ["pending", "spot_checked", "fully_reviewed"],
+          "description": "人工复核状态：pending=待复核，spot_checked=已抽检（DB2 路径），fully_reviewed=全量双人复核（DB3 锚点路径）"
+        },
+        "review_date": {
+          "type": ["string", "null"],
+          "format": "date",
+          "description": "复核日期；未复核时为 null"
+        },
+        "reviewers": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "复核人（Reviewer A/B），未复核时省略"
+        }
+      }
+    },
+    "convention_version": {
+      "type": "string",
+      "description": "录入时所依据的 convention_version，须与 conventions.yaml 一致"
+    }
+  }
+}

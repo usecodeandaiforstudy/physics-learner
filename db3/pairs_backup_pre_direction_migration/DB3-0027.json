@@ -1,0 +1,71 @@
+{
+  "pair_id": "DB3-0027",
+  "domain": "mechanics",
+  "language": "zh",
+  "requirement_text": "头盔缓冲层要耐冲击：吸能路径至少有 3 个亚稳塌缩模式，能垒不低于 4 nats。",
+  "requirement_structured": {
+    "property_id": "toughness",
+    "direction": "bound_below",
+    "target_value": {
+      "E_req_nats": 4,
+      "n_valleys_count": 3
+    },
+    "rv_hint": "fracture_path_landscape",
+    "constraints": [
+      "requires_db5_calibration = true"
+    ],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-TOUGH-001"
+  ],
+  "info_metric_vector": {
+    "q8_stability_margin": {
+      "direction": "lower_bound",
+      "expr": "E_req"
+    },
+    "q10_redundancy": {
+      "direction": "increase",
+      "expr": ">= 3 metastable basins"
+    }
+  },
+  "worked_example": {
+    "setup": "头盔缓冲层（逐步压溃：3 个塌缩模式）",
+    "given": {
+      "E_req": {
+        "value": 4,
+        "unit": "nats",
+        "is_bridge_constant": true
+      },
+      "n_valleys": {
+        "value": 3,
+        "unit": "count",
+        "is_bridge_constant": false
+      },
+      "Delta_F_ddagger": {
+        "value": 5,
+        "unit": "nats",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "ΔF‡ = 5 nats ≥ 4 ✓；谷数 3 ≥ 3 ✓",
+    "result": "q8 ≥ 4 nats；多谷 3 个",
+    "reference_scale": "类比级参考：冲击吸能结构能垒 3–8 nats；绝对值须 DB5 校准"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-TOUGH-001 [类比]：须 DB5 校准后才可入 B v1 训练集",
+    "md/physical to ai.md 总论表第 7 条：锐利/平坦极小值↔自旋玻璃自由能景观",
+    "md/information mechanics derivations.md B.7 稳定性分析（能垒与多稳态）"
+  ],
+  "strictness": "类比",
+  "requires_db5_calibration": true,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

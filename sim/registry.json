@@ -1,0 +1,326 @@
+{
+  "beta": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "alpha": [
+        0.5,
+        10.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "cauchy": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "gamma": [
+        0.1,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "chisq": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "k": [
+        1.0,
+        20.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "diffusion": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "D": [
+        0.1,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "elastic": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "k": [
+        0.1,
+        10.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "frechet": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "shape": [
+        0.5,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "gamma": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "k": [
+        0.5,
+        10.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "gaussian_mixture2": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "d": [
+        0.05,
+        6.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "geometric": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "p": [
+        0.02,
+        0.98
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "harmonic_oscillator": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "omega": [
+        0.1,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "invchisq": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "k": [
+        1.0,
+        20.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "inverse_gamma": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "k": [
+        0.5,
+        10.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "landau": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "a": [
+        -2.0,
+        2.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "laplace": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "rate": [
+        0.1,
+        10.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "lc_circuit": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "capacitance": [
+        0.1,
+        10.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "logistic": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "scale": [
+        0.1,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "lognormal": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "sigma": [
+        0.1,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "negbin": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "p": [
+        0.02,
+        0.98
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "ou": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "theta": [
+        0.01,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "poisson_count": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "rate": [
+        0.1,
+        20.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "radioactive_decay": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "rate": [
+        0.1,
+        10.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "rayleigh": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "sigma": [
+        0.1,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "truncated_gaussian": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "tau": [
+        -3.0,
+        1.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "truncated_geometric": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "p": [
+        0.05,
+        0.5
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "two_level": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "p": [
+        0.05,
+        0.95
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "vonmises": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "kappa": [
+        0.1,
+        20.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  },
+  "weibull": {
+    "metrics": [
+      "q1"
+    ],
+    "params": {
+      "shape": [
+        0.5,
+        5.0
+      ]
+    },
+    "source": "sim/expand_registry.py（校准通过）"
+  }
+}

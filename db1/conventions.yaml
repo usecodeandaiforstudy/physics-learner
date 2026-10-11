@@ -1,0 +1,297 @@
+# =============================================================================
+# DB1 符号约定规范 (Conventions)
+# -----------------------------------------------------------------------------
+# 本文件是 DB1 所有符号约定的唯一权威来源。
+# 约定漂移不会破坏单个系统的自洽性（因此指纹可计算性测试抓不住它），
+# 但会污染 DB2 的 q 向量跨系统可比性。故约定规范是 DB1 的防线。
+#
+# 版本管理规则：
+#   - convention_version 变更 = 全 DB2 重编码（与 encoder_version 同级对待）。
+#   - 任何系统入库时，其录入所用 convention_version 必须写入记录（见 db1.schema.json）。
+# =============================================================================
+
+convention_version: "1.0.0"
+updated: "2026-09-25"
+
+# -----------------------------------------------------------------------------
+# 第 1 组：对数与信息泛函
+# -----------------------------------------------------------------------------
+information_functionals:
+  # 信息量一律自然对数，单位 nats（禁止 bits）。
+  log_base: natural            # 允许值: natural | none
+  log_base_unit: nats
+
+  # Fisher 度量定义（唯一允许形式）
+  fisher_metric:
+    definition: "g_ij(theta) = integral p(x;theta) * d_i ln p * d_j ln p dx"
+    equivalent: "g_ij = E[(d_i ln p)(d_j ln p)]"
+    note: "theta 为分布参数向量；对多参数系统，入库时须指明求导所针对的参数子集"
+
+  # 互信息定义
+  mutual_information:
+    definition: "I(X;Y) = KL[p(x,y) || p(x)p(y)]"
+    # 估计器按分布族指定（强制，禁止默认一个估计器跑所有系统）
+    estimator_by_family:
+      gaussian: "analytic"       # 高斯解析式（含高斯相关矩阵公式）
+      discrete: "binning"        # 离散直方图
+      continuous_nongaussian: "KSG"   # 连续非高斯用 KSG 估计器
+      gibbs: "analytic_or_sampling"   # Gibbs 态视可解性选解析或采样
+
+  # 信息瓶颈 (IB) 曲线计算参数（全局固定，保证跨系统可比）
+  ib_curve:
+    beta_grid: "logspace(-2, 3, 32)"   # β 网格：10^-2 ~ 10^3，32 点
+    n_trajectory_samples: 1000         # 每条 IB 曲线的采样点数
+    curve_quantity: "I(X;T) vs I(T;Y)" # 记录量
+
+  # 信息作用量 S_info 的符号约定
+  action:
+    sign: "L_info = (1/2) g_ij qdot_i qdot_j - [I(X;T) - beta*I(T;Y)]"
+    note: "势能项 = IB 泛函；动能项 = Fisher 度量二次型"
+
+# -----------------------------------------------------------------------------
+# 第 2 组：分布族与参数化
+# -----------------------------------------------------------------------------
+distribution_families:
+  # 统一枚举 ID（模板与 schema 只允许引用这些 ID，禁止自由文本）
+  gaussian:
+    id: DIST-GAUSS
+    parameterization: ["mu", "sigma"]   # 注意：用 sigma（标准差），禁止 sigma^2 混用
+    constraint: "sigma > 0"
+  multivariate_gaussian:
+    id: DIST-MVN
+    parameterization: ["mean_vector", "covariance_matrix"]
+    constraint: "covariance 必须对称正定"
+  gibbs:
+    id: DIST-GIBBS
+    parameterization: ["hamiltonian", "tau"]
+    definition: "p propto exp(-H/tau)"
+    constraint: "tau 必须显式记录（即使 tau=1 也要写）"
+  discrete_categorical:
+    id: DIST-CAT
+    parameterization: ["probability_vector"]
+    constraint: "sum(p) = 1, p_i >= 0"
+  poisson:
+    id: DIST-POISSON
+    parameterization: ["lambda"]
+    constraint: "lambda > 0"
+  exponential:
+    id: DIST-EXPONENTIAL
+    parameterization: ["rate"]
+    definition: "p(x) = rate * exp(-rate*x), x >= 0（指数分布，非指数族）"
+    constraint: "rate > 0"
+    note: "与 exponential_family（指数族 DIST-EXP）区分：本条目是单参数指数分布"
+  bernoulli:
+    id: DIST-BERNOULLI
+    parameterization: ["p"]
+    definition: "P(1)=p, P(0)=1-p"
+    constraint: "0 < p < 1"
+  laplace:
+    id: DIST-LAPLACE
+    parameterization: ["mu", "b"]
+    definition: "p(x) = 1/(2b) * exp(-|x-mu|/b)"
+    constraint: "b > 0"
+  landau:
+    id: DIST-LANDAU
+    parameterization: ["a", "b", "kT"]
+    definition: "p(phi) propto exp(-(a*phi^2/2 + b*phi^4/4)/kT)（序参量平衡分布）"
+    constraint: "b > 0, kT > 0"
+    note: "Fisher 关于约化温度系数 a 需数值积分（无解析式）；a>0 单峰，a<0 双峰（对称破缺）"
+  exponential_family:
+    id: DIST-EXP
+    parameterization: ["natural_parameter_vector"]
+    note: "入库时须给出对数配分函数 A(eta)"
+
+  # ---- 扩族批次 1（2026-09-26）：非对角 Fisher / 有界支撑 / 圆支撑 ----
+  gamma:
+    id: DIST-GAMMA
+    parameterization: ["k", "theta"]   # 形状-尺度（非率参数化，Erlang/chi2 桥接）
+    definition: "p(x) = x^(k-1) exp(-x/theta) / (Gamma(k) theta^k), x >= 0"
+    constraint: "k > 0, theta > 0"
+    note: "Fisher 非对角 g_k_theta = 1/theta（库中首个参数耦合族）；k=1 退化指数，k=nu/2+theta=2 为 chi2"
+  beta:
+    id: DIST-BETA
+    parameterization: ["alpha", "beta"]  # 注意符号名 beta 与 sympy 的 Beta 函数大小写不同，无冲突
+    definition: "p(x) = x^(alpha-1) (1-x)^(beta-1) / B(alpha, beta), x in [0,1]"
+    constraint: "alpha > 0, beta > 0"
+    note: "库中首个有界支撑 [0,1] 连续族（占据分数/纯度/混合权重物理）"
+  weibull:
+    id: DIST-WEIBULL
+    parameterization: ["shape", "scale"]  # 命名避开 lambda（python 关键字 + sympy 冲突）
+    definition: "p(x) = (shape/scale) (x/scale)^(shape-1) exp(-(x/scale)^shape), x >= 0"
+    constraint: "shape > 0, scale > 0"
+    note: "det = pi^2/(6 scale^2) 与 shape 无关；k=1 退化指数；断裂/疲劳寿命标准模型"
+  von_mises:
+    id: DIST-VONMISES
+    parameterization: ["mu", "kappa"]   # 圆上位置-集中度
+    definition: "p(theta) = exp(kappa cos(theta-mu)) / (2 pi I_0(kappa)), theta in [-pi,pi]"
+    constraint: "kappa > 0（kappa->inf 高斯极限 N(mu,1/kappa)）"
+    note: "库中首个圆支撑 S¹ 族（新拓扑）；I_mu = kappa*I1/I0 解析，I_kappa 数值微分"
+
+  # ---- 扩族批次 2（2026-09-26）：离散非幂律 / 重尾 / 幅值 / S 形 ----
+  geometric:
+    id: DIST-GEOMETRIC
+    parameterization: ["p"]
+    definition: "P(X=k) = p(1-p)^(k-1), k >= 1（首次成功等待）"
+    constraint: "0 < p < 1"
+    note: "Fisher=1/(p²(1-p)) 非对称非幂律；离散族谱系第三成员（泊松/伯努利/几何）"
+  cauchy:
+    id: DIST-CAUCHY
+    parameterization: ["gamma"]   # 尺度（位置 x0 固定 0）
+    definition: "p(x) = 1/(pi gamma [1 + (x/gamma)^2])（洛伦兹线形）"
+    constraint: "gamma > 0"
+    note: "Fisher=1/(2 gamma²)；重尾：有限 Fisher 但无限方差（与高斯有限方差对照）"
+  rayleigh:
+    id: DIST-RAYLEIGH
+    parameterization: ["sigma"]   # 尺度（二维高斯幅值）
+    definition: "p(x) = (x/sigma²) exp(-x²/(2 sigma²)), x >= 0"
+    constraint: "sigma > 0"
+    note: "Fisher=4/sigma²（系数 4 由四阶矩 E[X⁴]=8σ⁴ 给出）；风速/散射/湍流幅值"
+  logistic:
+    id: DIST-LOGISTIC
+    parameterization: ["scale"]   # 尺度 s（位置 mu 固定 0）
+    definition: "p(x) = exp(-x/s) / (s (1+exp(-x/s))²)"
+    constraint: "scale > 0"
+    note: "Fisher=(π²+3)/(9s²)；π² 项是代数标志；S 形生长/激活阈值"
+
+  # ---- 扩族批次 3（2026-09-27）：ψ₁ 族 / 计数族 / 乘性噪声族 ----
+  # 动机：A 网络族级 OOD 逐族分解显示 gamma（ψ₁(k)+k/θ²）为主要失败源、
+  # poisson（1/λ 计数）为次失败源——训练库无纯 ψ₁ 曲线族与超散计数族可借。
+  chi_square:
+    id: DIST-CHISQ
+    parameterization: ["k"]   # 自由度 k（χ²(k) = Gamma(k/2, 2)）
+    definition: "p(x) = x^(k/2-1) exp(-x/2) / (2^(k/2) Gamma(k/2)), x >= 0"
+    constraint: "k > 0"
+    note: "Fisher=ψ₁(k/2)/4=polygamma(1,k/2)/4（链式换元 χ²=Gamma(k/2,2)）；库中首个纯 trigamma 曲线族，补 gamma 的 ψ₁(k) 项覆盖"
+  negative_binomial:
+    id: DIST-NEGBIN
+    parameterization: ["k", "p"]   # k=成功次数（Gamma-Poisson 混合的伽马形状），p=成功概率
+    definition: "P(X=n) = C(n-1, k-1) p^k (1-p)^(n-k), n >= k（第 k 次成功等待）"
+    constraint: "k > 0, 0 < p < 1"
+    note: "Fisher(关于 p，k 为结构常数)=k/(p²(1-p))；k=1 严格退化几何 Geo(p)；泊松-伽马混合超散计数，补计数族覆盖；注意：I(k) 无初等闭式，Fisher 摘要为关于 p 的条件信息"
+  lognormal:
+    id: DIST-LOGNORM
+    parameterization: ["mu", "sigma"]   # 对数空间的均值与标准差
+    definition: "p(x) = exp(-(ln x - mu)²/(2 sigma²)) / (x sigma sqrt(2 pi)), x > 0"
+    constraint: "sigma > 0"
+    note: "Fisher 矩阵 diag(1/σ², 2/σ²) 与高斯同形（双射不变性：ln 单调变换保持 Fisher）；本批对照组：加族不加新函数形状，检验纯属性新颖性对族级 OOD 的作用"
+  # ---- 扩族批次 4（2026-09-29，R4 平膝形状族）----
+  gaussian_mixture2:
+    id: DIST-MIX2
+    parameterization: ["d", "w", "sigma"]   # d=峰分离度（扫描），w=混合权重，sigma=分量标准差
+    definition: "p(x) = w*N(x|-d/2, sigma) + (1-w)*N(x|+d/2, sigma)（对称双高斯混合）"
+    constraint: "0 < w < 1, sigma > 0"
+    note: "Fisher 关于分离度 d 数值积分（无解析式）：d=0 → 0；单调上升 → 1/(4σ²) 平台（d≳4σ，S 形饱和曲线——上升膝+平台膝，自测确认无过冲）——库中首个带饱和平台的曲线，补 landau 盲区缺的形状素材（R4 目标）；物理=双模态传感器/双稳测量/外差信号"
+  truncated_gaussian:
+    id: DIST-TRUNCNORM
+    parameterization: ["tau", "mu", "sigma"]   # tau=右截断点（扫描），mu/sigma 为原高斯参数
+    definition: "p(x) = N(x|mu, sigma) / (1 - Phi((tau-mu)/sigma))，x > tau（单边右截断）"
+    constraint: "sigma > 0"
+    note: "Fisher 关于截断点 tau 有解析式 I(tau)=phi(z)²/(sigma²(1-Phi(z))²)，z=(tau-mu)/sigma：z→−∞ 时 →0（平台膝），z 接近均值陡升——「平→陡」上升膝（与 landau 的下降膝互补）；物理=阈值化测量/截尾寿命/门限触发"
+  truncated_geometric:
+    id: DIST-TRUNCGEOM
+    parameterization: ["k", "p"]   # k=支撑上界（结构常数），p=成功概率（扫描）
+    definition: "P(X=n) = p*(1-p)^(n-1) / (1-(1-p)^k)，n = 1..k（有限支撑几何，q=1-p）"
+    constraint: "k >= 1, 0 < p < 1"
+    note: "Fisher 关于 p 为有限和（k 项精确求和，无积分误差）：score=1/p-(n-1)/q+k*q^(k-1)/(1-q^k)；k→∞ 退化几何 Geo(p)（I(p)→1/(p²(1-p))，自测极限对照）；R4b 目标：库中首个「k 列 + p 列同时填充」的非 ψ₁ 训练族——与 negbin 输入模式同构（negbin 的 k 列在训练集无同构样本是其墙的根因假设）"
+  inverse_gamma:
+    id: DIST-INVGAMMA
+    parameterization: ["k", "theta"]   # k=形状（ψ₁ 语义），theta=尺度（与 gamma 同名同义）
+    definition: "p(x) = theta^k x^(-k-1) exp(-theta/x) / Gamma(k), x > 0"
+    constraint: "k > 0, theta > 0"
+    note: "Fisher 与伽马完全同形：trace=ψ₁(k)+k/θ²、det=(k·ψ₁(k)−1)/θ²——样本空间微分同胚 x→1/x 保持 Fisher（IG(k,θ)={1/X : X~Gamma(k,θ)}）；R4c 目标：与 gamma 同构的输入模式（k+theta 双列填充，ψ₁ 语义）——gamma 的 k 列在训练集无同构样本是其墙的根因假设"
+  inverse_chi_square:
+    id: DIST-INVCHISQ
+    parameterization: ["k"]   # k=自由度（单列）；theta=2 固定为结构常数不占列
+    definition: "p(x) = 2^(-k/2) x^(-k/2-1) exp(-1/(2x)) / Gamma(k/2), x > 0（逆卡方，尺度 1/2 固定）"
+    constraint: "k > 0"
+    note: "Fisher(关于 k)=ψ₁(k/2)/4——与 chisq 逐点相同（逆卡方=逆伽马(k/2,2)，θ 固定不占列）；R4d 目标：chisq 同构（k 单列 + 纯 ψ₁ 目标）——盲测第 49 条：chisq 的 k 单列 ψ₁ 模式在训练集无同构样本是其墙的根因"
+  frechet:
+    id: DIST-FRECHET
+    parameterization: ["shape", "scale"]   # shape=α（形状，扫描），scale=s
+    definition: "p(x) = alpha*s^alpha*x^(-alpha-1)*exp(-(s/x)^alpha), x > 0（上限极值）"
+    constraint: "alpha > 0, s > 0"
+    note: "Fisher：I_αα=((1−γ)²+π²/6)/α²、I_ss=α²/s²、I_αs=(1−γ)/s；trace=C/α²+α²/s²（U 形，C=(1−γ)²+π²/6=1.8237——与 weibull 的 U 形常数完全相同，同属极值理论），det=π²/(6s²)；R4d 目标：weibull 同构（shape+scale 双列 + U 形目标）"
+  rician:
+    id: DIST-RICIAN
+    parameterization: ["kappa"]   # kappa=K 因子（ν²/2σ²，扫描）；σ=1 固定为结构常数不占列
+    definition: "p(x) = x*exp(-(x^2+nu^2)/2)*I0(x*nu)，x > 0，nu=sqrt(2*kappa)（σ=1）"
+    constraint: "kappa >= 0"
+    note: "Fisher 关于 kappa 数值积分：s_κ=−1+(x/ν)·I₁(xν)/I₀(xν)；κ→0（Rayleigh 极限）I→1；κ→∞ 尾 I→1/(2κ)——与 vonmises 同向（½→0）同尾（1/(4κ)）衰减曲线；R4d 第三刀目标：vonmises 同构（kappa 单列 + 深集中 Fisher→0）；注意 attr 非圆族（[0,∞) 支撑），同构在「列 + 形状」不在支撑；**已反噬回滚（第 51 条）：共享列同构要求曲线一致，rician 曲线与 vonmises 差 20× 导致错误列绑定**"
+  wrapped_normal:
+    id: DIST-WRAPNORM
+    parameterization: ["kappa"]   # kappa=底层高斯 σ（桥接命名；σ 越大越均匀）
+    definition: "p(theta) = (1/2pi)(1 + 2 sum_{k>=1} rho^(k^2) cos(k theta))，rho=e^(-kappa^2/2)，theta in [0,2pi)"
+    constraint: "kappa > 0"
+    note: "Fisher 关于 kappa 数值积分（级数截断 K=20）：kappa→∞（均匀极限）I→0，尾 I~2κ²e^(−κ²)；与 vonmises **三层同构**（kappa 列 + 圆支撑 attr + 衰减到 0 方向）——第 51 条修正后的选型：rician 只两层且曲线差 20× 被回滚"
+
+  # 最高频 AI 幻觉点警示（写入模板）
+  pitfall_sigma: "参数化用 sigma（标准差），方差写成 sigma^2；禁止把 sigma 当方差"
+
+# -----------------------------------------------------------------------------
+# 第 3 组：随机过程（SDE）
+# -----------------------------------------------------------------------------
+stochastic_processes:
+  calculus: "ito"               # 默认 Itô（禁止 Stratonovich 混用）
+  sde_canonical_form: "dX = f(X,t) dt + sigma(X,t) dW"
+  noise_interpretation: "sigma^2 为方差速率（variance rate）"
+  pitfall_ito_stratonovich: >
+    Itô/Stratonovich 混用会改变漂移项，进而改变 Fisher 漂移。
+    若必须用 Stratonovich，须显式标注并在 fingerprint_expectation 里给出换算。
+  thermal_bath:
+    default_kT: 1.0             # 无量纲化默认 k_B T = 1
+    rule: "偏离 kT=1 时必须显式记录 kT 值"
+  wiener_process:
+    symbol: "W"
+    definition: "dW ~ N(0, dt)"
+
+# -----------------------------------------------------------------------------
+# 第 4 组：量纲与桥接
+# -----------------------------------------------------------------------------
+dimensional_analysis:
+  rule: "入库前统一无量纲化"
+  nondimensionalization: "required"   # 系统变量先无量纲化再入库
+  bridge_constants:
+    rule: "无法无量纲化的桥接常数必须显式记录"
+    examples:
+      - "V/(k_B T)"          # 涨落-响应中的体积/热能
+      - "hbar"               # 量子系统
+      - "L^2/D"              # 扩散时间尺度
+    requirement: "桥接常数必须带单位，且写入 parameters 字段"
+
+# -----------------------------------------------------------------------------
+# 第 5 组：图编码（信息结构图 G）
+# -----------------------------------------------------------------------------
+graph_encoding:
+  node_id_rule: "{family}__{role}__{index}"
+  node_roles: ["X", "T", "Y"]   # X=源, T=隐藏表示层, Y=目标
+  edge_direction: "信息流方向 X -> T -> Y"
+  dpi_chain_direction: "I(X;T1) >= I(X;T2) >= ... >= I(X;Y)"
+  node_feature_schema:
+    - "distribution_family_id"   # 引用 distribution_families 的 id
+    - "dimension"
+    - "parameterization"
+    - "noise_type"
+  edge_feature_schema:
+    - "mutual_information"
+    - "capacity"
+    - "kl_divergence"
+    - "dpi_margin"
+
+# -----------------------------------------------------------------------------
+# 第 6 组：strictness 与 provenance
+# -----------------------------------------------------------------------------
+strictness:
+  levels: ["定理", "推导", "类比", "猜想"]   # 沿用理论文档四级标注
+  level_meaning:
+    定理: "由 DPI + Chentsov 唯一性严格导出的对应"
+    推导: "在明确假设下推导的对应"
+    类比: "结构性类比，尚未严格证明"
+    猜想: "推测性对应"
+
+provenance:
+  source_enum: ["textbook", "literature", "AI+verified"]
+  rule_anchor: >
+    AI 生成物（source = AI+verified）可入 DB2 作为指纹数据，
+    但【不可】作为 DB3 的锚点桥接规则。
+    锚点级公式（进 DB3 的桥接规则）必须溯源文献（source = textbook 或 literature）。
+  required_fields: ["source", "generator_model", "verified_by", "review_date"]

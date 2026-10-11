@@ -1,0 +1,52 @@
+{
+  "system_id": "plasma_mhd_mode_bimodal",
+  "domain": "plasma",
+  "name": "MHD 模双稳观测（对称双峰）",
+  "family": "gaussian_mixture2",
+  "equations": {
+    "latex": "p(x) = \\tfrac12 N(x|{-}d/2,\\sigma) + \\tfrac12 N(x|{+}d/2,\\sigma)",
+    "sympy": "p = 0.5*exp(-(x+d/2)**2/(2*sigma**2))/(sigma*sqrt(2*pi)) + 0.5*exp(-(x-d/2)**2/(2*sigma**2))/(sigma*sqrt(2*pi))"
+  },
+  "parameters": [
+    {
+      "name": "d",
+      "symbol": "d",
+      "range": [
+        0.05,
+        6.0
+      ],
+      "default": 2.0
+    },
+    {
+      "name": "w",
+      "symbol": "w",
+      "range": [
+        0.1,
+        0.9
+      ],
+      "default": 0.5
+    },
+    {
+      "name": "sigma",
+      "symbol": "\\sigma",
+      "range": [
+        0.5,
+        2.0
+      ],
+      "default": 1.0
+    }
+  ],
+  "channel_template": "CT-MIX-001",
+  "fingerprint_expectation": [],
+  "strictness_level": "定理",
+  "source_ref": "标准混合模型（信息几何）；磁流体不稳定性双稳观测",
+  "scan_param": "d",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

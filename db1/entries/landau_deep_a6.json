@@ -1,0 +1,57 @@
+{
+  "system_id": "landau_deep_a6",
+  "domain": "thermodynamics",
+  "name": "深阱 a=6（ΔF=9 nats）",
+  "family": "landau",
+  "equations": {
+    "latex": "F = \\tfrac12 a \\phi^2 + \\tfrac14 b \\phi^4",
+    "sympy": "F = a*phi**2/2 + b*phi**4/4"
+  },
+  "parameters": [
+    {
+      "name": "a",
+      "symbol": "a",
+      "range": [
+        -5.4,
+        -6.6000000000000005
+      ],
+      "default": -6.0
+    },
+    {
+      "name": "b",
+      "symbol": "b",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.0
+    },
+    {
+      "name": "kT",
+      "symbol": "k_B T",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.0,
+      "unit": "energy",
+      "is_bridge_constant": true
+    }
+  ],
+  "channel_template": "CT-LANDAU-001",
+  "fingerprint_expectation": [],
+  "strictness_level": "定理",
+  "source_ref": "Landau 相变理论（序参量涨落）；深阱限用于高势垒/长保持需求；注：**AI 生成；不得作锚点；须走 db1/review_queue.py 人工复核**",
+  "scan_param": "a",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "db1/gen_landau_deep_entries.py (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

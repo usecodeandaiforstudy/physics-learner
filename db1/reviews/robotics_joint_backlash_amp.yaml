@@ -1,0 +1,27 @@
+review_record:
+  entry_system_id: robotics_joint_backlash_amp
+  family: rayleigh
+  domain: robotics
+  scan_param: sigma
+  machine_gate:
+    schema_valid: true
+    convention_check: true
+    computability: true
+    analytic_compare: true
+    errors: []
+    warnings: []
+  provenance_source: AI+verified
+  anchor_eligible: false
+  reviewer_a:
+    name: reviewer
+    decision: accept
+    findings: 关节回差走瑞利，4/σ² 为标准式
+    date: '2026-10-07'
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  final_destination: DB2
+  final_decision: accept
+  human_review_status: spot_checked

@@ -1,0 +1,75 @@
+{
+  "pair_id": "DB3-0015",
+  "domain": "electronics",
+  "language": "zh",
+  "requirement_text": "功率芯片要把局部热点在 1 ms 内拉平到 100 μm 尺度以下。",
+  "requirement_structured": {
+    "property_id": "transport",
+    "target_value": {
+      "kappa_m2_per_s": 1e-05,
+      "length_scale_m": 0.0001,
+      "front_time_s": 0.001
+    },
+    "rv_hint": "field_time_slices",
+    "constraints": [
+      "material = silicon"
+    ],
+    "ambiguity_flags": [
+      "R-COND-001 二义性：文本'把局部热点拉平'显式指向读向(a) 热锋快（κ↑，q7↑）；显式消解，仍记录标志备查"
+    ],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_hint": "lower",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed"
+  },
+  "rule_ids": [
+    "R-COND-001"
+  ],
+  "info_metric_vector": {
+    "q7_info_propagation_speed": {
+      "direction": "lower_bound",
+      "expr": "kappa_req/L",
+      "reading": "a_heat_front_fast"
+    }
+  },
+  "worked_example": {
+    "setup": "硅芯片热点拉平，L=100 μm，τ=1 ms（读向 a，显式）",
+    "given": {
+      "L": {
+        "value": 0.0001,
+        "unit": "m",
+        "is_bridge_constant": true
+      },
+      "kappa": {
+        "value": 1e-05,
+        "unit": "m^2/s",
+        "is_bridge_constant": true
+      },
+      "front_time": {
+        "value": 0.001,
+        "unit": "s",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "κ_req = L²/τ = (1e-4)²/1e-3 = 1e-5 m²/s（硅 κ≈0.9e-4 m²/s，余量约 9 倍，可行）；q7 ≥ κ/L = 1e-5/1e-4",
+    "result": "q7 ≥ 0.1 m/s",
+    "reference_scale": "q7 参考尺度：芯片尺度热输运 1e-2–1 m/s"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]（二义性规则）、§2.3.5 例 1（一维热传导：逐模式 MI 与 DPI 裕度）",
+    "md/information mechanics derivations.md §9 锥结构与类光方程（q7=c_info 的 Fisher 锥依据）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

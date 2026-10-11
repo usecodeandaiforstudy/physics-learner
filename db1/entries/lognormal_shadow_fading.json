@@ -1,0 +1,54 @@
+{
+  "system_id": "lognormal_shadow_fading",
+  "domain": "signal",
+  "name": "阴影衰落（大尺度路径损耗波动）",
+  "family": "lognormal",
+  "equations": {
+    "latex": "p(x) = \\frac{e^{-(\\ln x - \\mu)^2/(2\\sigma^2)}}{x\\sigma\\sqrt{2\\pi}}",
+    "sympy": "p = exp(-(log(x)-mu)**2/(2*sigma**2))/(x*sigma*sqrt(2*pi))"
+  },
+  "parameters": [
+    {
+      "name": "mu",
+      "symbol": "\\mu",
+      "range": [
+        -2.0,
+        2.0
+      ],
+      "default": 0.0
+    },
+    {
+      "name": "sigma",
+      "symbol": "\\sigma",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 0.5
+    }
+  ],
+  "channel_template": "CT-LOGNORM-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "3/sigma**2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "2/sigma**4",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准信道模型（对数正态阴影）",
+  "scan_param": "sigma",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

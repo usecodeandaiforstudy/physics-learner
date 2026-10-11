@@ -1,0 +1,86 @@
+{
+  "pair_id": "DB3-0017",
+  "domain": "communication",
+  "language": "en",
+  "requirement_text": "The communication link must keep the coded-symbol estimate at sigma_req = 1e-3 despite channel fading.",
+  "requirement_structured": {
+    "property_id": "robustness",
+    "direction": "bound_below",
+    "target_value": {
+      "sigma_dimensionless_fraction": 0.001
+    },
+    "rv_hint": "joint_signal_noise_family",
+    "constraints": [
+      "fading_model = rayleigh"
+    ],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-ROBUST-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "1/(n·sigma_req^2)",
+      "note": "信号 θ=符号方向"
+    },
+    "q4_dpi_margin": {
+      "direction": "lower_bound",
+      "expr": "delta_dpi = 1 nat"
+    },
+    "q10_redundancy": {
+      "direction": "increase",
+      "expr": ">= ln(2)",
+      "note": "拓扑/对称性保护编码"
+    },
+    "q1_noise_direction": {
+      "direction": "upper_bound",
+      "expr": "lambda_max(g_eta_eta) <= epsilon",
+      "note": "干扰 η=信道衰落方向"
+    }
+  },
+  "worked_example": {
+    "setup": "编码通信链路：信号=编码符号，干扰=瑞利衰落",
+    "given": {
+      "sigma_req": {
+        "value": 0.001,
+        "unit": "dimensionless_fraction",
+        "is_bridge_constant": true
+      },
+      "epsilon": {
+        "value": 0.01,
+        "unit": "1/dimensionless^2",
+        "is_bridge_constant": true
+      },
+      "delta_dpi": {
+        "value": 1,
+        "unit": "nats",
+        "is_bridge_constant": true
+      },
+      "n": {
+        "value": 1,
+        "unit": "dimensionless_count",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "q1 ≥ 1/(1e-3)² = 1e6；λ_max(g_ηη) ≤ 1e-2；q4 ≥ 1 nat；q10 ≥ ln2 nats",
+    "result": "q1 ≥ 1e6；λ_max ≤ 1e-2；q4 ≥ 1 nat；q10 ≥ 0.693 nats",
+    "reference_scale": "通信方向 q1 参考尺度：高可靠链路 1e4–1e8"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-ROBUST-001 [推导]（方向性分离）",
+    "md/information mechanics derivations.md A.7 信息论四件套（DPI）、§27 第二定律=DPI（q4 裕度依据）",
+    "md/physical to ai.md 对应四：FHN 拓扑保护↔对抗鲁棒性（q10 受保护信息位依据）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

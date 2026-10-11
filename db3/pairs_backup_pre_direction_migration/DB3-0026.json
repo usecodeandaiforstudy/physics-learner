@@ -1,0 +1,71 @@
+{
+  "pair_id": "DB3-0026",
+  "domain": "materials",
+  "language": "zh",
+  "requirement_text": "复合材料层合板断裂韧性要高：裂纹扩展前单位路径自由能垒不低于 5 nats，且有至少 3 个亚稳能量谷（多谷增韧）。",
+  "requirement_structured": {
+    "property_id": "toughness",
+    "direction": "bound_below",
+    "target_value": {
+      "E_req_nats": 5,
+      "n_valleys_count": 3
+    },
+    "rv_hint": "fracture_path_landscape",
+    "constraints": [
+      "requires_db5_calibration = true"
+    ],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-TOUGH-001"
+  ],
+  "info_metric_vector": {
+    "q8_stability_margin": {
+      "direction": "lower_bound",
+      "expr": "E_req"
+    },
+    "q10_redundancy": {
+      "direction": "increase",
+      "expr": "亚稳谷数目 ≥ 3（多谷结构）"
+    }
+  },
+  "worked_example": {
+    "setup": "碳纤维层合板（桥联+微裂纹机制：主谷+2 个亚稳谷）",
+    "given": {
+      "E_req": {
+        "value": 5,
+        "unit": "nats",
+        "is_bridge_constant": true
+      },
+      "n_valleys": {
+        "value": 3,
+        "unit": "count",
+        "is_bridge_constant": false
+      },
+      "Delta_F_ddagger": {
+        "value": 6,
+        "unit": "nats",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "ΔF‡ = 6 nats ≥ 5 ✓；谷数 3 ≥ 3 ✓",
+    "result": "q8 ≥ 5 nats；多谷 3 个",
+    "reference_scale": "类比级参考：韧性材料能垒 3–10 nats（k_B T=1 单位）；绝对值须 DB5 校准"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-TOUGH-001 [类比]：须 DB5 校准后才可入 B v1 训练集",
+    "md/physical to ai.md 总论表第 7 条：锐利/平坦极小值↔自旋玻璃自由能景观",
+    "md/information mechanics derivations.md B.7 稳定性分析（能垒与多稳态）"
+  ],
+  "strictness": "类比",
+  "requires_db5_calibration": true,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

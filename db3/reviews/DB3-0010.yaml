@@ -1,0 +1,29 @@
+review_record:
+  pair_id: DB3-0010
+  rule_ids:
+  - R-FAST-001
+  domain: measurement
+  strictness: 定理（马尔可夫系统）
+  requirement_text: The photodetector response time must be under 10 ns.
+  q_summary:
+    q9_spectral_gap: lower_bound 1/tau_req
+  worked_example_result: q9 ≥ 1e8 s^-1
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-FAST-001 [定理，马尔可夫系统]、§2.3.5
+    例 3（OU 过程：λ2=θ=MI 衰减速率）
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

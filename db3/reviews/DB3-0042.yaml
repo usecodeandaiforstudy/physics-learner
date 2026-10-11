@@ -1,0 +1,28 @@
+review_record:
+  pair_id: DB3-0042
+  rule_ids:
+  - R-PRECISE-001
+  domain: agriculture
+  strictness: 定理
+  requirement_text: 土壤湿度传感器须在 200 次读数平均后把体积含水率的不确定度压到 0.02 以内。
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n·sigma_req^2) = 1/(200·4e-4) = 12.5
+  worked_example_result: q1 ≥ 12.5
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-PRECISE-001 [定理]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: user
+    decision: accept
+    findings: 物理侧：土壤体积含水率 σ≤0.02（无量纲分数）@200 次读数；量纲与 θ 一致
+    date: '2026-10-04'
+  reviewer_b:
+    name: user
+    decision: accept
+    findings: 信息论侧：q1=1/(200·4e-4)=12.5 与 R-PRECISE-001 一致；% 与无量纲分数换算正确
+    date: '2026-10-04'

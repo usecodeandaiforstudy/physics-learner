@@ -1,0 +1,90 @@
+{
+  "pair_id": "DB3-0198",
+  "domain": "communication",
+  "language": "zh",
+  "requirement_text": "链路须保持鲁棒：误帧率不超过 1e-3。",
+  "requirement_structured": {
+    "property_id": "robustness",
+    "target_value": {
+      "sigma_dimensionless_fraction": 0.001
+    },
+    "rv_hint": "joint_signal_noise_family",
+    "constraints": [
+      "T_range_K = [273, 323]"
+    ],
+    "ambiguity_flags": [],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_hint": "upper",
+    "quantity_bound_source": "ai_drafted",
+    "quantity_bound_review": "pending"
+  },
+  "rule_ids": [
+    "R-ROBUST-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "1/(n·sigma_req^2)",
+      "note": "信号 θ=增益方向"
+    },
+    "q4_dpi_margin": {
+      "direction": "lower_bound",
+      "expr": "delta_dpi = 0.5 nats"
+    },
+    "q10_redundancy": {
+      "direction": "increase",
+      "expr": ">= ln(2)（≥ ln 2 nats 受保护信息）"
+    },
+    "q1_noise_direction": {
+      "direction": "upper_bound",
+      "expr": "lambda_max(g_eta_eta) <= epsilon = 0.01 K^-2",
+      "note": "干扰 η=温漂方向 Fisher 上界"
+    }
+  },
+  "worked_example": {
+    "setup": "放大电路：信号=增益（无量纲），干扰=温度漂移",
+    "given": {
+      "sigma_req": {
+        "value": 0.01,
+        "unit": "dimensionless_fraction",
+        "is_bridge_constant": true
+      },
+      "epsilon": {
+        "value": 0.01,
+        "unit": "1/K^2",
+        "is_bridge_constant": true
+      },
+      "delta_dpi": {
+        "value": 0.5,
+        "unit": "nats",
+        "is_bridge_constant": true
+      },
+      "n": {
+        "value": 1,
+        "unit": "dimensionless_count",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "信号方向 q1 ≥ 1/(1×0.01²)=1e4；干扰方向 λ_max(g_ηη) ≤ 0.01 K^-2；q4 ≥ 0.5 nats；q10 ≥ ln2 ≈ 0.693 nats",
+    "result": "q1 ≥ 1e4；λ_max ≤ 0.01 K^-2；q4 ≥ 0.5 nats；q10 ≥ 0.693 nats",
+    "reference_scale": "方向性分离参考：干扰方向 ε 典型 1e-3–1e-1（参数单位平方倒数）；q4 裕度典型 0.1–1 nats"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-ROBUST-001 [推导]（方向性分离）",
+    "md/information mechanics derivations.md A.7 信息论四件套（DPI）、§27 第二定律=DPI（q4 裕度依据）",
+    "md/physical to ai.md 对应四：FHN 拓扑保护↔对抗鲁棒性（q10 受保护信息位依据）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-07",
+    "reviewer": "reviewer"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

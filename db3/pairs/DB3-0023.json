@@ -1,0 +1,69 @@
+{
+  "pair_id": "DB3-0023",
+  "domain": "measurement",
+  "language": "zh",
+  "requirement_text": "环境传感器要在 4 种工况（冬夏室内、室外、舱内）间自适应切换且不误判。",
+  "requirement_structured": {
+    "property_id": "adaptability",
+    "target_value": {
+      "n_environments_count": 4
+    },
+    "rv_hint": "environment_channel",
+    "constraints": [],
+    "ambiguity_flags": [],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_hint": "lower",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed"
+  },
+  "rule_ids": [
+    "R-ADAPT-001"
+  ],
+  "info_metric_vector": {
+    "q5_channel_capacity": {
+      "direction": "lower_bound",
+      "expr": "ln(M)",
+      "note": "M=工况数"
+    },
+    "q2_posterior_sharpness": {
+      "direction": "upper_bound",
+      "expr": "0（det g ≤ 1，平坦极小）"
+    }
+  },
+  "worked_example": {
+    "setup": "多工况传感器，M=4",
+    "given": {
+      "M": {
+        "value": 4,
+        "unit": "dimensionless_count",
+        "is_bridge_constant": false
+      },
+      "C_req": {
+        "value": 1.386,
+        "unit": "nats",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "C_req = ln 4 = 1.386 nats；q5 ≥ 1.386；q2 ≤ 0",
+    "result": "q5 ≥ 1.386 nats；q2 ≤ 0（后验宽容度大）",
+    "reference_scale": "q5 参考尺度：多工况分类 1–10 nats"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-ADAPT-001 [类比]",
+    "md/ai to physical.md 对应二：信道容量的双下降定理（容量-自由度关系）",
+    "md/Cover_Thomas_入门总结.md 第五章 信道容量（分辨 M 态需 ln M）"
+  ],
+  "strictness": "类比",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

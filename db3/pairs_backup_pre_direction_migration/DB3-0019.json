@@ -1,0 +1,85 @@
+{
+  "pair_id": "DB3-0019",
+  "domain": "mechanics",
+  "language": "en",
+  "requirement_text": "The optical bench must keep mirror alignment within sigma_req = 1e-6 rad under floor vibration.",
+  "requirement_structured": {
+    "property_id": "robustness",
+    "direction": "bound_below",
+    "target_value": {
+      "sigma_rad": 1e-06
+    },
+    "rv_hint": "joint_signal_noise_family",
+    "constraints": [
+      "floor_vibration = 1e-4_m_rms"
+    ],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-ROBUST-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "1/(n·sigma_req^2)",
+      "note": "信号 θ=镜面角度方向"
+    },
+    "q4_dpi_margin": {
+      "direction": "lower_bound",
+      "expr": "delta_dpi = 0.5 nats"
+    },
+    "q10_redundancy": {
+      "direction": "increase",
+      "expr": ">= ln(2)"
+    },
+    "q1_noise_direction": {
+      "direction": "upper_bound",
+      "expr": "lambda_max(g_eta_eta) <= epsilon",
+      "note": "干扰 η=地基振动方向"
+    }
+  },
+  "worked_example": {
+    "setup": "光学平台：信号=镜面角度，干扰=地基振动",
+    "given": {
+      "sigma_req": {
+        "value": 1e-06,
+        "unit": "rad",
+        "is_bridge_constant": true
+      },
+      "epsilon": {
+        "value": 0.01,
+        "unit": "1/m^2",
+        "is_bridge_constant": true
+      },
+      "delta_dpi": {
+        "value": 0.5,
+        "unit": "nats",
+        "is_bridge_constant": true
+      },
+      "n": {
+        "value": 1,
+        "unit": "dimensionless_count",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "q1 ≥ 1/(1e-6)² = 1e12 rad^-2；λ_max(g_ηη) ≤ 1e-2 m^-2；q4 ≥ 0.5 nats；q10 ≥ ln2 nats",
+    "result": "q1 ≥ 1e12 rad^-2；λ_max ≤ 1e-2 m^-2；q4 ≥ 0.5 nats；q10 ≥ 0.693 nats",
+    "reference_scale": "精密光机 q1 参考尺度：1e10–1e14 rad^-2"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-ROBUST-001 [推导]（方向性分离）",
+    "md/information mechanics derivations.md A.7 信息论四件套（DPI）、§27 第二定律=DPI（q4 裕度依据）",
+    "md/physical to ai.md 对应四：FHN 拓扑保护↔对抗鲁棒性（q10 受保护信息位依据）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

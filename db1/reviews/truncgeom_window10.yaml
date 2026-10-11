@@ -1,0 +1,28 @@
+review_record:
+  entry_system_id: truncgeom_window10
+  family: truncated_geometric
+  domain: signal
+  scan_param: p
+  machine_gate:
+    schema_valid: true
+    convention_check: true
+    computability: true
+    analytic_compare: true
+    errors: []
+    warnings:
+    - 未提供 fingerprint_expectation，跳过解析对照
+  provenance_source: AI+verified
+  anchor_eligible: false
+  reviewer_a:
+    name: reviewer
+    decision: accept
+    findings: 真值在 core/fisher.fisher_truncgeom_p（已修正符号 bug 并加回归）
+    date: '2026-10-07'
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  final_destination: DB2
+  final_decision: accept
+  human_review_status: spot_checked

@@ -1,0 +1,65 @@
+{
+  "pair_id": "DB3-0099",
+  "domain": "textile",
+  "language": "en",
+  "requirement_text": "The loom controller must settle to the ±1% tension band within 0.2 s.",
+  "requirement_structured": {
+    "property_id": "response_speed",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "settling_time_s": 0.2,
+      "settling_band": "pm_1_percent"
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-FAST-001"
+  ],
+  "info_metric_vector": {
+    "q9_spectral_gap": {
+      "direction": "lower_bound",
+      "expr": "4.6/0.2 = 23 s^-1",
+      "note": "表驱动生成（textile 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "The loom controller must settle to the ±1% tension band within 0.2 s.",
+    "given": {
+      "settling_time_s": {
+        "value": 0.2,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      },
+      "settling_band": {
+        "value": "pm_1_percent",
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "±1% 带内回稳",
+    "result": "q9 ≥ 23 s^-1",
+    "reference_scale": "张力控制 q9 参考尺度：1e1–1e2 s^-1"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-FAST-001",
+    "md/information mechanics derivations.md（对应规则推导）",
+    "textile 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "定理（马尔可夫系统）",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "pending",
+    "anchor_eligible": false,
+    "review_date": null,
+    "reviewer": null
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

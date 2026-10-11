@@ -1,0 +1,77 @@
+{
+  "pair_id": "DB3-0022",
+  "domain": "materials",
+  "language": "zh",
+  "requirement_text": "磁存储位在工作温度下 10 年内不得热退磁：保持自由能垒不低于 40 k_B T。",
+  "requirement_structured": {
+    "property_id": "stability",
+    "target_value": {
+      "E_req_nats": 40
+    },
+    "rv_hint": "landau_order_parameter",
+    "constraints": [
+      "lifetime_years = 10"
+    ],
+    "ambiguity_flags": [],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_hint": "lower",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed"
+  },
+  "rule_ids": [
+    "R-STABLE-001"
+  ],
+  "info_metric_vector": {
+    "q8_stability_margin": {
+      "direction": "lower_bound",
+      "expr": "E_req = 40 nats（k_B T=1 单位）",
+      "note": "ΔF‡/k_B T ≥ 40 为磁存储行业惯例下限；a 按 |a| 理解"
+    }
+  },
+  "worked_example": {
+    "setup": "磁记录位（Landau a=20, b=1, k_B T=1）",
+    "given": {
+      "a": {
+        "value": 20,
+        "unit": "dimensionless",
+        "is_bridge_constant": false
+      },
+      "b": {
+        "value": 1,
+        "unit": "dimensionless",
+        "is_bridge_constant": false
+      },
+      "k_B_T": {
+        "value": 1,
+        "unit": "nats",
+        "is_bridge_constant": true
+      },
+      "E_req": {
+        "value": 40,
+        "unit": "nats",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "ΔF‡ = a²/(4·b·k_B T) = 400/4 = 100 nats",
+    "result": "ΔF‡ = 100 nats ≥ 40 nats ✓",
+    "reference_scale": "磁存储 q8 参考尺度：40–60 nats（k_B T=1 单位）为行业稳定线"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-STABLE-001 [推导/类比]",
+    "md/physical to ai.md 对应二：FHN 临界现象↔信息传播相变（临界点距离，ξ∝|I−I_c|^{−ν}）",
+    "md/information mechanics derivations.md B.7 稳定性分析、§29（Landau 双阱与热力学对应）"
+  ],
+  "strictness": "推导/类比",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

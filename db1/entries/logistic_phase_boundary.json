@@ -1,0 +1,48 @@
+{
+  "system_id": "logistic_phase_boundary",
+  "domain": "thermodynamics",
+  "name": "相界序参量（软模涨落）",
+  "family": "logistic",
+  "equations": {
+    "latex": "p(x) = \\frac{e^{-x/s}}{s(1+e^{-x/s})^2}",
+    "sympy": "p = exp(-x/scale)/(scale*(1+exp(-x/scale))**2)"
+  },
+  "parameters": [
+    {
+      "name": "scale",
+      "symbol": "s",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 2.0
+    }
+  ],
+  "channel_template": "CT-LOGISTIC-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "(pi**2 + 3)/(9*scale**2)",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "(pi**2 + 3)/(9*scale**2)",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准统计（逻辑斯蒂分布）",
+  "scan_param": "scale",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

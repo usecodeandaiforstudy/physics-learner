@@ -1,0 +1,70 @@
+{
+  "system_id": "diff_heat_rod_insulator",
+  "domain": "diffusion",
+  "name": "绝热材料热传导",
+  "family": "diffusion",
+  "equations": {
+    "latex": "\\partial u/\\partial t = D \\partial^2 u/\\partial x^2",
+    "sympy": "Eq(diff(u,t), D*diff(u,x,x))"
+  },
+  "parameters": [
+    {
+      "name": "D",
+      "symbol": "D",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 0.2
+    },
+    {
+      "name": "t",
+      "symbol": "t",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 2.0
+    },
+    {
+      "name": "sigma_signal",
+      "symbol": "\\sigma_s",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.0
+    },
+    {
+      "name": "mu",
+      "symbol": "\\mu",
+      "range": [
+        -5.0,
+        5.0
+      ],
+      "default": 0.0
+    }
+  ],
+  "channel_template": "CT-DIFF-002",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "3/(sigma_signal^2 + 2*D*t)",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "Crank, Ch.2",
+  "scan_param": "D",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-02",
+    "reviewers": [
+      "user"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

@@ -1,0 +1,29 @@
+review_record:
+  pair_id: DB3-0007
+  rule_ids:
+  - R-PRECISE-001
+  domain: measurement
+  strictness: 定理
+  requirement_text: A strain gauge must resolve a 10-microstrain change with a single
+    reading (sigma_req = 1e-5).
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n · sigma_req^2)
+  worked_example_result: q1 ≥ 1e10（1/应变²）
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-PRECISE-001 [定理]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

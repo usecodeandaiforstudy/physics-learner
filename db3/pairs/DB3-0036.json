@@ -1,0 +1,68 @@
+{
+  "pair_id": "DB3-0036",
+  "domain": "plasma",
+  "language": "zh",
+  "requirement_text": "朗缪尔探针密度测量须在 500 次平均后把相对不确定度压到 2% 以内。",
+  "requirement_structured": {
+    "property_id": "precision",
+    "quantity_bound": "upper",
+    "target_value": {
+      "sigma_dimensionless_fraction": 0.02,
+      "n_samples_count": 500
+    },
+    "rv_hint": "counting",
+    "constraints": [
+      "averaging_window = 500 samples"
+    ],
+    "ambiguity_flags": [],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound_hint": "upper",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok"
+  },
+  "rule_ids": [
+    "R-PRECISE-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "1/(n·sigma_req^2) = 1/(500·0.02^2) = 0.5",
+      "note": "θ=相对密度；σ_req 为无量纲分数"
+    }
+  },
+  "worked_example": {
+    "setup": "朗缪尔探针离子饱和流，500 次平均，相对不确定度 2%",
+    "given": {
+      "sigma_req": {
+        "value": 0.02,
+        "unit": "dimensionless_fraction",
+        "is_bridge_constant": true
+      },
+      "n": {
+        "value": 500,
+        "unit": "count",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "Cramér–Rao：q1 ≥ 1/(n·σ²) = 1/(500·4e-4)",
+    "result": "q1 ≥ 0.5",
+    "reference_scale": "计数型诊断 q1 参考尺度：1e-2–1e1"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-PRECISE-001 [定理]",
+    "md/information mechanics derivations.md §1 定理 1.3（Cramér–Rao）",
+    "等离子体域第 2 条需求（程序化生成，待人工复核）"
+  ],
+  "strictness": "定理",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-03",
+    "reviewer": "user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

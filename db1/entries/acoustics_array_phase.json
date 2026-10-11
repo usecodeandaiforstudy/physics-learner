@@ -1,0 +1,34 @@
+{
+  "system_id": "acoustics_array_phase",
+  "domain": "acoustics",
+  "name": "麦克风阵列相位误差（圆上分布）",
+  "family": "vonmises",
+  "equations": {
+    "latex": "p(\\theta) = \\frac{e^{\\kappa\\cos\\theta}}{2\\pi I_0(\\kappa)}",
+    "sympy": "p = exp(kappa*cos(theta))/(2*pi*besseli(0,kappa))"
+  },
+  "parameters": [
+    {
+      "name": "kappa",
+      "symbol": "\\kappa",
+      "range": [
+        0.1,
+        20.0
+      ],
+      "default": 5.0
+    }
+  ],
+  "channel_template": "CT-VONMISES-001",
+  "fingerprint_expectation": [],
+  "strictness_level": "定理",
+  "source_ref": "标准统计（von Mises 圆分布）；阵列相位误差",
+  "scan_param": "kappa",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

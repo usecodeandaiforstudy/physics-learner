@@ -1,0 +1,28 @@
+review_record:
+  pair_id: DB3-0041
+  rule_ids:
+  - R-FAST-001
+  domain: energy
+  strictness: 定理（马尔可夫系统）
+  requirement_text: 电网一次调频须在 2 s 内把频率偏差回稳到设定带的 ±0.1% 以内。
+  q_summary:
+    q9_spectral_gap: lower_bound ln(100)/t_settle = 4.6/2 = 2.3 s^-1
+  worked_example_result: q9 ≥ 2.3 s^-1
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-FAST-001 [定理，马尔可夫系统]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: user
+    decision: accept
+    findings: 物理侧：一次调频 2 s 回稳 ±0.1% 带内；调速器延迟 0.2 s 作约束记录恰当
+    date: '2026-10-04'
+  reviewer_b:
+    name: user
+    decision: accept
+    findings: 信息论侧：q9=4.6/2=2.3 s^-1 与 R-FAST-001 一致；双方向标注正确
+    date: '2026-10-04'

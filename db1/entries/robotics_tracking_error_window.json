@@ -1,0 +1,63 @@
+{
+  "system_id": "robotics_tracking_error_window",
+  "domain": "robotics",
+  "name": "轨迹偏差窗口（阈值化）",
+  "family": "truncated_gaussian",
+  "equations": {
+    "latex": "p(x) = \\frac{N(x|\\mu,\\sigma)}{1-\\Phi(z)},\\; x>\\tau",
+    "sympy": "p = exp(-(x-mu)**2/(2*sigma**2))/(sigma*sqrt(2*pi)*(1-Phi((tau-mu)/sigma)))"
+  },
+  "parameters": [
+    {
+      "name": "tau",
+      "symbol": "\\tau",
+      "range": [
+        -3.0,
+        1.0
+      ],
+      "default": -0.8
+    },
+    {
+      "name": "mu",
+      "symbol": "\\mu",
+      "range": [
+        -2.0,
+        2.0
+      ],
+      "default": 0.0
+    },
+    {
+      "name": "sigma",
+      "symbol": "\\sigma",
+      "range": [
+        0.5,
+        2.0
+      ],
+      "default": 1.0
+    }
+  ],
+  "channel_template": "CT-TRUNCNORM-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "2*exp(-((tau-mu)/sigma)**2)/(pi*sigma**2*erfc((tau-mu)/(sigma*sqrt(2)))**2)",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "2*exp(-((tau-mu)/sigma)**2)/(pi*sigma**2*erfc((tau-mu)/(sigma*sqrt(2)))**2)",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "跟踪误差统计；robotics 域实例（程序化生成，表驱动）",
+  "scan_param": "tau",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

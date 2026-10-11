@@ -1,0 +1,45 @@
+{
+  "system_id": "decay_slow",
+  "domain": "quantum",
+  "name": "长半衰期核素（慢衰变）",
+  "family": "radioactive_decay",
+  "equations": {
+    "latex": "N(t) = N_0 e^{-\\lambda t}",
+    "sympy": "N = N0*exp(-rate*t)"
+  },
+  "parameters": [
+    {
+      "name": "rate",
+      "symbol": "\\lambda",
+      "range": [
+        0.1,
+        10.0
+      ],
+      "default": 0.2
+    }
+  ],
+  "channel_template": "CT-DECAY-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "1/rate^2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "1/rate^2",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准核物理（放射性衰变律）",
+  "scan_param": "rate",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

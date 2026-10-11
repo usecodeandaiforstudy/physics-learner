@@ -1,0 +1,67 @@
+{
+  "pair_id": "DB3-0083",
+  "domain": "aerospace",
+  "language": "zh",
+  "requirement_text": "再入热防护层的热锋须在 30 s 内穿过 8 mm 厚度。",
+  "requirement_structured": {
+    "property_id": "transport",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "length_scale_m": 0.008,
+      "front_time_s": 30
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": [
+      "R-COND-001 二义性：文本未显式区分读向；缺省取读向(a) 热锋传播快（κ↑，q7↑），禁止静默选择（arch §2.3.8 第 2 条）"
+    ]
+  },
+  "rule_ids": [
+    "R-COND-001"
+  ],
+  "info_metric_vector": {
+    "q7_info_propagation_speed": {
+      "direction": "lower_bound",
+      "expr": "kappa_req/L，kappa_req ≈ L²/t = 2.1e-6 m²/s → q7 ≈ 2.7e-4 m/s",
+      "note": "表驱动生成（aerospace 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "再入热防护层的热锋须在 30 s 内穿过 8 mm 厚度。",
+    "given": {
+      "length_scale_m": {
+        "value": 0.008,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      },
+      "front_time_s": {
+        "value": 30,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "热锋表观速度 q7 ≥ κ_req/L（读向 a）",
+    "result": "q7 ≥ 2.7e-4 m/s",
+    "reference_scale": "热防护 q7 参考尺度：1e-5–1e-2 m/s"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-COND-001",
+    "md/information mechanics derivations.md（对应规则推导）",
+    "aerospace 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "pending",
+    "anchor_eligible": false,
+    "review_date": null,
+    "reviewer": null
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

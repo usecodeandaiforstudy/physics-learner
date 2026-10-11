@@ -1,0 +1,57 @@
+{
+  "system_id": "aquaculture_oxygen_saturation_fraction",
+  "domain": "aquaculture",
+  "name": "溶氧饱和度（有界）",
+  "family": "beta",
+  "equations": {
+    "latex": "p(x) = \\frac{x^{\\alpha-1}(1-x)^{\\beta-1}}{B(\\alpha,\\beta)}",
+    "sympy": "p = x**(alpha-1)*(1-x)**(beta-1)/(gamma(alpha)*gamma(beta)/gamma(alpha+beta))"
+  },
+  "parameters": [
+    {
+      "name": "alpha",
+      "symbol": "\\alpha",
+      "range": [
+        0.5,
+        10.0
+      ],
+      "default": 2.2
+    },
+    {
+      "name": "beta",
+      "symbol": "\\beta",
+      "range": [
+        0.5,
+        10.0
+      ],
+      "default": 3.2
+    }
+  ],
+  "channel_template": "CT-BETA-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "polygamma(1, alpha) + polygamma(1, beta) - 2*polygamma(1, alpha + beta)",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "polygamma(1, alpha)*polygamma(1, beta) - polygamma(1, alpha + beta)*(polygamma(1, alpha) + polygamma(1, beta))",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "溶氧统计；aquaculture 域实例（程序化生成，表驱动批次 2）",
+  "scan_param": "alpha",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

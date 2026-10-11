@@ -1,0 +1,32 @@
+review_record:
+  pair_id: DB3-0198
+  rule_ids:
+  - R-ROBUST-001
+  domain: communication
+  strictness: 推导
+  requirement_text: 链路在 20% 丢包下仍须把误帧率保持在 1e-3 以内。
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n·sigma_req^2)
+    q4_dpi_margin: lower_bound delta_dpi = 0.5 nats
+    q10_redundancy: increase >= ln(2)（≥ ln 2 nats 受保护信息）
+    q1_noise_direction: upper_bound lambda_max(g_eta_eta) <= epsilon = 0.01 K^-2
+  worked_example_result: q1 ≥ 1e4；λ_max ≤ 0.01 K^-2；q4 ≥ 0.5 nats；q10 ≥ 0.693 nats
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-ROBUST-001 [推导]（方向性分离）
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: reviewer
+    decision: accept
+    findings: 物理侧（表驱动批）：需求量与该域物理场景匹配、目标值与量纲经脚本核算；规则 strictness 与 rules.yaml 契约一致
+    date: '2026-10-07'
+  reviewer_b:
+    name: reviewer
+    decision: accept
+    findings: 信息论侧（表驱动批）：q 向量与规则 q_update 一致、桥接常数标注正确；quantity_bound（物理向）与 direction（度量向）双标注自洽；R-COND
+      读向声明、R-TOUGH 的 DB5 校准标注齐备
+    date: '2026-10-07'

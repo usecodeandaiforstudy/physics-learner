@@ -1,0 +1,59 @@
+{
+  "system_id": "lc_large_cap",
+  "domain": "electromagnetism",
+  "name": "大电容（低电压涨落）",
+  "family": "lc_circuit",
+  "equations": {
+    "latex": "\\langle \\tfrac12 C V^2 \\rangle = \\tfrac12 kT",
+    "sympy": "0.5*C*V**2 = 0.5*kT"
+  },
+  "parameters": [
+    {
+      "name": "capacitance",
+      "symbol": "C",
+      "range": [
+        0.1,
+        10.0
+      ],
+      "default": 10.0
+    },
+    {
+      "name": "kT",
+      "symbol": "k_B T",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.0,
+      "unit": "energy",
+      "is_bridge_constant": true
+    }
+  ],
+  "channel_template": "CT-LC-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "3*capacitance/kT",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "2*capacitance^2/kT^2",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准电路热噪声（能量均分）",
+  "scan_param": "capacitance",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

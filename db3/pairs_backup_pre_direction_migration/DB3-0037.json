@@ -1,0 +1,59 @@
+{
+  "pair_id": "DB3-0037",
+  "domain": "plasma",
+  "language": "zh",
+  "requirement_text": "等离子体密度反馈控制回路须在 5 ms 内把偏差压回设定带的 1% 以内。",
+  "requirement_structured": {
+    "property_id": "response_speed",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "target_value": {
+      "settling_time_s": 0.005,
+      "settling_band": "pm_1_percent"
+    },
+    "rv_hint": "markov_chain",
+    "constraints": [
+      "actuator_delay = 0.5 ms"
+    ],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-FAST-001"
+  ],
+  "info_metric_vector": {
+    "q9_spectral_gap": {
+      "direction": "lower_bound",
+      "expr": "ln(100)/t_settle = 4.6/0.005 = 920 s^-1",
+      "note": "±1% 带内回稳 ≈ 4.6τ"
+    }
+  },
+  "worked_example": {
+    "setup": "密度反馈回路，±1% 带内回稳时间 5 ms",
+    "given": {
+      "t_settle": {
+        "value": 0.005,
+        "unit": "s",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "τ ≈ t_settle/ln(100) = 1.09 ms；q9 ≥ 4.6/0.005",
+    "result": "q9 ≥ 920 s^-1",
+    "reference_scale": "控制回路 q9 参考尺度：1e2–1e4 s^-1"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-FAST-001 [定理，马尔可夫系统]",
+    "md/information mechanics derivations.md B.7 稳定性分析（弛豫与谱）",
+    "等离子体域第 3 条需求（程序化生成，待人工复核）"
+  ],
+  "strictness": "定理（马尔可夫系统）",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-03",
+    "reviewer": "user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

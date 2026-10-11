@@ -1,0 +1,69 @@
+{
+  "pair_id": "DB3-0020",
+  "domain": "materials",
+  "language": "zh",
+  "requirement_text": "高温合金部件工作点须距 γ' 溶解线有足够裕度：约化温度距离不低于 0.15。",
+  "requirement_structured": {
+    "property_id": "stability",
+    "target_value": {
+      "delta_dimensionless": 0.15,
+      "T_c_K": 1273,
+      "T_work_K": 1080
+    },
+    "rv_hint": "landau_order_parameter",
+    "constraints": [
+      "T_c_K = 1273"
+    ],
+    "ambiguity_flags": [],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_hint": "lower",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed"
+  },
+  "rule_ids": [
+    "R-STABLE-001"
+  ],
+  "info_metric_vector": {
+    "q8_stability_margin": {
+      "direction": "lower_bound",
+      "expr": "(T_c - T_work)/T_c（β 空间距离为 (β−β_c)/β_c = (T_c−T)/T_work，两者勿混；本对取温度约化距离）",
+      "note": "距相变点约化距离；或等价地自由能垒判据"
+    }
+  },
+  "worked_example": {
+    "setup": "镍基高温合金，T_c=1273 K（γ' 溶解），工作 T=1080 K",
+    "given": {
+      "T_c": {
+        "value": 1273,
+        "unit": "K",
+        "is_bridge_constant": true
+      },
+      "T_work": {
+        "value": 1080,
+        "unit": "K",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "q8 = (1273−1080)/1273 = 193/1273",
+    "result": "q8 = 0.152 ≥ 0.15 ✓",
+    "reference_scale": "q8 参考尺度：工程相稳定裕度 0.1–0.5；临界器件（存储）能垒判据 20–60 k_B T"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-STABLE-001 [推导/类比]",
+    "md/physical to ai.md 对应二：FHN 临界现象↔信息传播相变（临界点距离，ξ∝|I−I_c|^{−ν}）",
+    "md/information mechanics derivations.md B.7 稳定性分析、§29（Landau 双阱与热力学对应）"
+  ],
+  "strictness": "推导/类比",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

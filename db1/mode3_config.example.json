@@ -1,0 +1,7 @@
+{
+  "base_url": "https://api.deepseek.com/v1",
+  "api_key_env": "DEEPSEEK_API_KEY",
+  "model": "deepseek-chat",
+  "timeout_s": 120,
+  "temperature": 0.3
+}

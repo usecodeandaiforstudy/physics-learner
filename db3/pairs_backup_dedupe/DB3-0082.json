@@ -1,0 +1,65 @@
+{
+  "pair_id": "DB3-0082",
+  "domain": "aerospace",
+  "language": "zh",
+  "requirement_text": "舱板振动监测须在 400 个采样点后把幅值不确定度压到 2% 以内。",
+  "requirement_structured": {
+    "property_id": "precision",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "sigma_dimensionless_fraction": 0.02,
+      "n_samples_count": 400
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-PRECISE-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "1/(n·sigma_req^2) = 1/(400·4e-4) = 6.25",
+      "note": "表驱动生成（aerospace 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "舱板振动监测须在 400 个采样点后把幅值不确定度压到 2% 以内。",
+    "given": {
+      "sigma_dimensionless_fraction": {
+        "value": 0.02,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      },
+      "n_samples_count": {
+        "value": 400,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "Cramér–Rao：q1 ≥ 1/(n·σ²)",
+    "result": "q1 ≥ 6.25",
+    "reference_scale": "航天测振 q1 参考尺度：1e0–1e2"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-PRECISE-001",
+    "md/information mechanics derivations.md §1 定理 1.3（Cramér–Rao）",
+    "aerospace 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "定理",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "pending",
+    "anchor_eligible": false,
+    "review_date": null,
+    "reviewer": null
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

@@ -1,0 +1,77 @@
+{
+  "pair_id": "DB3-0028",
+  "domain": "mechanics",
+  "language": "zh",
+  "requirement_text": "快速伺服平台又要硬又要快：刚度不低于 200 N/m，95% 响应不超过 10 ms。",
+  "requirement_structured": {
+    "property_id": null,
+    "direction": null,
+    "target_value": {
+      "stiffness_N_per_m": 200,
+      "settling_time_s": 0.01,
+      "settling_band": "95_percent"
+    },
+    "rv_hint": "microstate_gibbs+markov_chain",
+    "constraints": [
+      "T_K = 300"
+    ],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-STIFF-001",
+    "R-FAST-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "K_req/(k_B T)",
+      "note": "位移方向"
+    },
+    "q9_spectral_gap": {
+      "direction": "lower_bound",
+      "expr": "3/t_settle（95% 建立 ≈ 3τ，一阶系统）"
+    }
+  },
+  "worked_example": {
+    "setup": "伺服平台，K=200 N/m，95% 建立时间 10 ms，T=300 K",
+    "given": {
+      "K_req": {
+        "value": 200,
+        "unit": "N/m",
+        "is_bridge_constant": true
+      },
+      "k_B_T": {
+        "value": 4.14e-21,
+        "unit": "J",
+        "is_bridge_constant": true
+      },
+      "t_settle": {
+        "value": 0.01,
+        "unit": "s",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "q1 ≥ 200/4.14e-21 = 4.8e22 m^-2；q9 ≥ 3/0.01 = 300 s^-1",
+    "result": "q1 ≥ 4.8e22 m^-2；q9 ≥ 300 s^-1",
+    "reference_scale": "组合下界各分量参考其单规则种子对（DB3-0001/DB3-0009）"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-STIFF-001 [定理]、§2.3.5 例 2（线性弹性谐振近似）",
+    "md/information mechanics derivations.md §29 涨落-耗散定理与信息理想气体（约 L1120–1147）：能量涨落-响应对应",
+    "md/information mechanics derivations.md §1 定理 1.3（Cramér–Rao）：度规 = 可测量性的界限",
+    "勘误记录（2 处）：①arch §2.3.3 桥接式 C_eff=(V/k_B T)·g_λλ 与同节下界 q1≥(k_B T/V)·C_req 互为倒数，按涨落-响应定理标准形式 g_λλ=C·V/(k_B T)（即 C=(k_B T/V)·g）取值，与 DB1 elastic/harmonic 族解析指纹 g=k/(k_B T) 一致；②rules.yaml R-STIFF-001 q_update.expr 初版误沿 arch 错误方向 k_B T·C_req/V（量纲 J²/m⁶ 非无量纲），经 A 角色复核发现，已修正为 C_req·V/(k_B T)（量纲自洽）。详见 db3/rules/rules.yaml R-STIFF-001 bridge_law.note",
+    "cross domain rl architecture plan.md §2.3.3 R-FAST-001 [定理，马尔可夫系统]、§2.3.5 例 3（OU 过程：λ2=θ=MI 衰减速率）",
+    "md/information mechanics derivations.md B.7 稳定性分析（弛豫与谱）"
+  ],
+  "strictness": "定理（马尔可夫系统）",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

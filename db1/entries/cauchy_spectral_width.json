@@ -1,0 +1,45 @@
+{
+  "system_id": "cauchy_spectral_width",
+  "domain": "quantum",
+  "name": "谱线宽度（半高半宽）",
+  "family": "cauchy",
+  "equations": {
+    "latex": "p(x) = \\frac{1}{\\pi\\gamma[1+(x/\\gamma)^2]}",
+    "sympy": "p = 1/(pi*gamma*(1+(x/gamma)**2))"
+  },
+  "parameters": [
+    {
+      "name": "gamma",
+      "symbol": "\\gamma",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 0.5
+    }
+  ],
+  "channel_template": "CT-CAUCHY-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "1/(2*gamma**2)",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "1/(2*gamma**2)",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准统计（柯西/洛伦兹分布）",
+  "scan_param": "gamma",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

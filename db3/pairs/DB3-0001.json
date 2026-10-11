@@ -1,0 +1,73 @@
+{
+  "pair_id": "DB3-0001",
+  "domain": "mechanics",
+  "language": "zh",
+  "requirement_text": "弹簧要足够硬：施加 1 N 载荷时变形不超过 10 mm。",
+  "requirement_structured": {
+    "property_id": "stiffness",
+    "target_value": {
+      "stiffness_N_per_m": 100
+    },
+    "rv_hint": "microstate_gibbs",
+    "constraints": [
+      "T_K = 300"
+    ],
+    "ambiguity_flags": [],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "lower",
+    "quantity_bound_hint": "lower",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed"
+  },
+  "rule_ids": [
+    "R-STIFF-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "K_req/(k_B T)",
+      "note": "λ=位移方向；K_req=C·V 为总刚度（V 吸收进 C·V）"
+    }
+  },
+  "worked_example": {
+    "setup": "室温弹簧，刚度 K=100 N/m（1 N / 10 mm）",
+    "given": {
+      "K_req": {
+        "value": 100,
+        "unit": "N/m",
+        "is_bridge_constant": true
+      },
+      "k_B_T": {
+        "value": 4.14e-21,
+        "unit": "J",
+        "is_bridge_constant": true
+      },
+      "T": {
+        "value": 300,
+        "unit": "K",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "q1 ≥ K_req/(k_B T) = 100/4.14e-21",
+    "result": "q1 ≥ 2.4e22 m^-2（位移方向 Fisher 下界）",
+    "reference_scale": "位移方向 q1 参考尺度：室温 N/m 级刚度约 1e20–1e24 m^-2"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-STIFF-001 [定理]、§2.3.5 例 2（线性弹性谐振近似）",
+    "md/information mechanics derivations.md §29 涨落-耗散定理与信息理想气体（约 L1120–1147）：能量涨落-响应对应",
+    "md/information mechanics derivations.md §1 定理 1.3（Cramér–Rao）：度规 = 可测量性的界限",
+    "勘误记录（2 处）：①arch §2.3.3 桥接式 C_eff=(V/k_B T)·g_λλ 与同节下界 q1≥(k_B T/V)·C_req 互为倒数，按涨落-响应定理标准形式 g_λλ=C·V/(k_B T)（即 C=(k_B T/V)·g）取值，与 DB1 elastic/harmonic 族解析指纹 g=k/(k_B T) 一致；②rules.yaml R-STIFF-001 q_update.expr 初版误沿 arch 错误方向 k_B T·C_req/V（量纲 J²/m⁶ 非无量纲），经 A 角色复核发现，已修正为 C_req·V/(k_B T)（量纲自洽）。详见 db3/rules/rules.yaml R-STIFF-001 bridge_law.note"
+  ],
+  "strictness": "定理",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

@@ -1,0 +1,46 @@
+{
+  "system_id": "truncgeom_window10",
+  "domain": "signal",
+  "name": "窗口化缺陷计数（窗口 10 的首缺陷位置）",
+  "family": "truncated_geometric",
+  "equations": {
+    "latex": "P(n) = \\frac{p(1-p)^{n-1}}{1-(1-p)^k},\\; n=1..k",
+    "sympy": "P = p*(1-p)**(n-1)/(1-(1-p)**k)"
+  },
+  "parameters": [
+    {
+      "name": "k",
+      "symbol": "k",
+      "range": [
+        1.0,
+        50.0
+      ],
+      "default": 10.0
+    },
+    {
+      "name": "p",
+      "symbol": "p",
+      "range": [
+        0.05,
+        0.5
+      ],
+      "default": 0.1
+    }
+  ],
+  "channel_template": "CT-TRUNCGEOM-001",
+  "fingerprint_expectation": [],
+  "strictness_level": "定理",
+  "source_ref": "标准概率论（截断几何分布）",
+  "scan_param": "p",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

@@ -1,0 +1,10 @@
+# 信息力学跨域设计系统 —— 运行依赖
+# 实测依赖面很窄：只用 numpy/scipy/torch/sympy/pyyaml（无其他第三方包）
+numpy>=1.24
+scipy>=1.10
+sympy>=1.12
+PyYAML>=6.0
+torch>=2.0
+
+# 可选（把实验检查脚本当 pytest 跑时用）
+# pytest>=7.4

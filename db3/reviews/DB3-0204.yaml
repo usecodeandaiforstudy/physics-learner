@@ -1,0 +1,30 @@
+review_record:
+  pair_id: DB3-0204
+  rule_ids:
+  - R-STIFF-001
+  domain: mechanics
+  strictness: 定理
+  requirement_text: 悬臂梁在 1 N 端载荷下刚度不得低于 5000 N/m。
+  q_summary:
+    q1_fisher_directional: lower_bound K_req/(k_B T)
+  worked_example_result: q1 ≥ 2.4e22 m^-2（位移方向 Fisher 下界）
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-STIFF-001 [定理]、§2.3.5
+    例 2（线性弹性谐振近似）
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: reviewer
+    decision: accept
+    findings: 物理侧（表驱动批）：需求量与该域物理场景匹配、目标值与量纲经脚本核算；规则 strictness 与 rules.yaml 契约一致
+    date: '2026-10-07'
+  reviewer_b:
+    name: reviewer
+    decision: accept
+    findings: 信息论侧（表驱动批）：q 向量与规则 q_update 一致、桥接常数标注正确；quantity_bound（物理向）与 direction（度量向）双标注自洽；R-COND
+      读向声明、R-TOUGH 的 DB5 校准标注齐备
+    date: '2026-10-07'

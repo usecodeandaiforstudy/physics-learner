@@ -1,0 +1,54 @@
+{
+  "system_id": "plasma_runaway_electron_burst",
+  "domain": "plasma",
+  "name": "逃逸电子雪崩成簇计数",
+  "family": "negbin",
+  "equations": {
+    "latex": "P(n) = \\binom{n+k-1}{n} p^k (1-p)^n",
+    "sympy": "P = binomial(n+k-1,n)*p**k*(1-p)**n"
+  },
+  "parameters": [
+    {
+      "name": "k",
+      "symbol": "k",
+      "range": [
+        1.0,
+        10.0
+      ],
+      "default": 4.0
+    },
+    {
+      "name": "p",
+      "symbol": "p",
+      "range": [
+        0.05,
+        0.5
+      ],
+      "default": 0.12
+    }
+  ],
+  "channel_template": "CT-NEGBIN-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "k/(p**2*(1-p))",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "k/(p**2*(1-p))",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准统计（负二项成簇计数）；等离子体逃逸电子雪崩诊断",
+  "scan_param": "p",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

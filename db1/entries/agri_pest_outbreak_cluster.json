@@ -1,0 +1,57 @@
+{
+  "system_id": "agri_pest_outbreak_cluster",
+  "domain": "agriculture",
+  "name": "虫害爆发成簇计数",
+  "family": "negbin",
+  "equations": {
+    "latex": "P(n) = \\binom{n+k-1}{n} p^k (1-p)^n",
+    "sympy": "P = binomial(n+k-1,n)*p**k*(1-p)**n"
+  },
+  "parameters": [
+    {
+      "name": "k",
+      "symbol": "k",
+      "range": [
+        1.0,
+        10.0
+      ],
+      "default": 3.0
+    },
+    {
+      "name": "p",
+      "symbol": "p",
+      "range": [
+        0.05,
+        0.5
+      ],
+      "default": 0.2
+    }
+  ],
+  "channel_template": "CT-NEGBIN-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "k/(p**2*(1-p))",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "k/(p**2*(1-p))",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准统计（负二项成簇计数）；虫害时空聚集",
+  "scan_param": "p",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

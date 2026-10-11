@@ -1,0 +1,32 @@
+review_record:
+  pair_id: DB3-0017
+  rule_ids:
+  - R-ROBUST-001
+  domain: communication
+  strictness: 推导
+  requirement_text: The communication link must keep the coded-symbol estimate at
+    sigma_req = 1e-3 despite channel fading.
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n·sigma_req^2)
+    q4_dpi_margin: lower_bound delta_dpi = 1 nat
+    q10_redundancy: increase >= ln(2)
+    q1_noise_direction: upper_bound lambda_max(g_eta_eta) <= epsilon
+  worked_example_result: q1 ≥ 1e6；λ_max ≤ 1e-2；q4 ≥ 1 nat；q10 ≥ 0.693 nats
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-ROBUST-001 [推导]（方向性分离）
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

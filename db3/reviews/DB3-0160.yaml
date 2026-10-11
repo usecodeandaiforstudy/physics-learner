@@ -1,0 +1,29 @@
+review_record:
+  pair_id: DB3-0160
+  rule_ids:
+  - R-PRECISE-001
+  domain: particle
+  strictness: 定理
+  requirement_text: 径迹重建须在 800 个采样点后把位置不确定度压到 0.005 m 以内。
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(800·2.5e-5) = 50 m^-2
+  worked_example_result: q1 ≥ 50 m^-2
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-PRECISE-001
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: user
+    decision: accept
+    findings: 物理侧（表驱动批）：需求量与该域物理场景匹配、目标值与量纲经脚本核算；规则 strictness 与 rules.yaml 契约一致
+    date: '2026-10-04'
+  reviewer_b:
+    name: user
+    decision: accept
+    findings: 信息论侧（表驱动批）：q 向量与规则 q_update 一致、桥接常数标注正确；quantity_bound（物理向）与 direction（度量向）双标注自洽；R-COND
+      读向声明、R-TOUGH 的 DB5 校准标注齐备
+    date: '2026-10-04'

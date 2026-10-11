@@ -1,0 +1,53 @@
+{
+  "pair_id": "DB3-0010",
+  "domain": "measurement",
+  "language": "en",
+  "requirement_text": "The photodetector response time must be under 10 ns.",
+  "requirement_structured": {
+    "property_id": "response_speed",
+    "direction": "bound_below",
+    "target_value": {
+      "tau_s": 1e-08
+    },
+    "rv_hint": "markov_chain",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-FAST-001"
+  ],
+  "info_metric_vector": {
+    "q9_spectral_gap": {
+      "direction": "lower_bound",
+      "expr": "1/tau_req"
+    }
+  },
+  "worked_example": {
+    "setup": "光电二极管探测链，τ_req=10 ns",
+    "given": {
+      "tau_req": {
+        "value": 1e-08,
+        "unit": "s",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "q9 ≥ 1/1e-8",
+    "result": "q9 ≥ 1e8 s^-1",
+    "reference_scale": "q9 参考尺度：光电探测 1e6–1e10 s^-1"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-FAST-001 [定理，马尔可夫系统]、§2.3.5 例 3（OU 过程：λ2=θ=MI 衰减速率）",
+    "md/information mechanics derivations.md B.7 稳定性分析（弛豫与谱）"
+  ],
+  "strictness": "定理（马尔可夫系统）",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

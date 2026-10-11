@@ -1,0 +1,29 @@
+review_record:
+  pair_id: DB3-0038
+  rule_ids:
+  - R-PRECISE-001
+  domain: geophysics
+  strictness: 定理
+  requirement_text: The radar altimeter must resolve surface roughness to within 0.05
+    m after 1000 pulses.
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n·sigma_req^2) = 1/(1000·0.0025) = 0.4 m^-2
+  worked_example_result: q1 ≥ 0.4 m^-2
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-PRECISE-001 [定理]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

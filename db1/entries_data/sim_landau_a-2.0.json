@@ -1,0 +1,18 @@
+{
+  "system_id": "sim_landau_a-2.0",
+  "family": "landau",
+  "source_type": "simulation",
+  "simulator": "landau-grid-cdf-v0（定律驱动采样；真实模拟器/实验数据同格式接入）",
+  "params": {
+    "a": -2.0,
+    "b": 1.0,
+    "kT": 1.0
+  },
+  "n_samples": 30000,
+  "data_path": "db1/data/sim_landau_a-2.0.npz",
+  "timestamp": "2026-10-03T05:52:23.034427+00:00",
+  "provenance": {
+    "source": "AI+verified",
+    "anchor_eligible": false
+  }
+}

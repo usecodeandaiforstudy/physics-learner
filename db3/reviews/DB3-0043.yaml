@@ -1,0 +1,32 @@
+review_record:
+  pair_id: DB3-0043
+  rule_ids:
+  - R-COND-001
+  domain: agriculture
+  strictness: 推导
+  requirement_text: The irrigation moisture front must traverse a 5 mm soil layer
+    within 600 s.
+  q_summary:
+    q7_info_propagation_speed: lower_bound kappa_req/L，kappa_req ≈ L²/t = (5e-3)²/600
+      = 4.2e-8 m²/s → q7 ≈ 8.3e-6 m/s
+  worked_example_result: q7 ≥ 8.3e-6 m/s
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]
+  ambiguity_flags:
+  - R-COND-001 二义性：文本未显式区分读向；缺省取读向(a) 热锋传播快（κ↑，q7↑），禁止静默选择（arch §2.3.8 第 2 条）
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: user
+    decision: accept
+    findings: 物理侧：5 mm 土层、600 s 内水锋穿过；κ≈L²/t=4.2e-8 m²/s 为派生量。
+    date: '2026-10-04'
+  reviewer_b:
+    name: user
+    decision: accept
+    findings: 信息论侧：q7=κ_req/L=8.3e-6 m/s（R-COND 读向 a，q7 下界）；quantity_bound=upper 已修正（被约束的是
+      front_time 而非派生的 κ）——本次自检抓出的写法错误已改
+    date: '2026-10-04'

@@ -1,0 +1,46 @@
+{
+  "system_id": "vonmises_rotor_angle",
+  "domain": "mechanics",
+  "name": "转子角误差分布",
+  "family": "vonmises",
+  "equations": {
+    "latex": "p(\\theta) = e^{\\kappa\\cos(\\theta-\\mu)}/(2\\pi I_0(\\kappa))",
+    "sympy": "p = exp(kappa*cos(theta-mu))/(2*pi*besseli(0, kappa))"
+  },
+  "parameters": [
+    {
+      "name": "mu",
+      "symbol": "\\mu",
+      "range": [
+        -3.14,
+        3.14
+      ],
+      "default": 0.0
+    },
+    {
+      "name": "kappa",
+      "symbol": "\\kappa",
+      "range": [
+        0.1,
+        10.0
+      ],
+      "default": 8.0
+    }
+  ],
+  "channel_template": "CT-VONMISES-001",
+  "fingerprint_expectation": [],
+  "strictness_level": "定理",
+  "source_ref": "Mardia & Jupp, Directional Statistics, Ch.3",
+  "scan_param": "kappa",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-09-27",
+    "reviewers": [
+      "user"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

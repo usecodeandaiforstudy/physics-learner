@@ -1,0 +1,81 @@
+{
+  "system_id": "ou_rc_lowpass",
+  "domain": "electromagnetism",
+  "name": "RC 低通滤波（电压噪声）",
+  "family": "ou",
+  "equations": {
+    "latex": "dX = -\\theta(X-\\mu)dt + \\sigma dW",
+    "sympy": "Eq(diff(X,t), -theta*(X-mu)) + sigma*dW"
+  },
+  "parameters": [
+    {
+      "name": "theta",
+      "symbol": "\\theta",
+      "range": [
+        0.1,
+        10.0
+      ],
+      "default": 2.0
+    },
+    {
+      "name": "sigma",
+      "symbol": "\\sigma",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.0
+    },
+    {
+      "name": "mu",
+      "symbol": "\\mu",
+      "range": [
+        -5.0,
+        5.0
+      ],
+      "default": 0.0
+    },
+    {
+      "name": "dt",
+      "symbol": "\\Delta t",
+      "range": [
+        0.01,
+        10.0
+      ],
+      "default": 1.0
+    },
+    {
+      "name": "sigma_obs",
+      "symbol": "\\sigma_{obs}",
+      "range": [
+        0.0,
+        5.0
+      ],
+      "default": 0.5
+    }
+  ],
+  "channel_template": "CT-DIFF-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "6*theta/sigma^2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "8*theta^2/sigma^4",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "Gardiner 2004, Ch.3",
+  "scan_param": "theta",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

@@ -1,0 +1,55 @@
+{
+  "pair_id": "DB3-0009",
+  "domain": "control",
+  "language": "zh",
+  "requirement_text": "执行器从阶跃指令到 95% 行程的响应时间不超过 20 ms。",
+  "requirement_structured": {
+    "property_id": "response_speed",
+    "direction": "bound_below",
+    "target_value": {
+      "settling_time_s": 0.02,
+      "settling_band": "95_percent"
+    },
+    "rv_hint": "markov_chain",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-FAST-001"
+  ],
+  "info_metric_vector": {
+    "q9_spectral_gap": {
+      "direction": "lower_bound",
+      "expr": "3/t_settle（95% 建立 ≈ 3τ，一阶系统）",
+      "note": "τ=1/λ2，Fokker–Planck 生成元第二特征值（Itô）；建立时间须经带宽修正换算为 τ，不得直接当 τ 用"
+    }
+  },
+  "worked_example": {
+    "setup": "机电执行器，95% 行程时间 20 ms",
+    "given": {
+      "t_settle": {
+        "value": 0.02,
+        "unit": "s",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "τ ≈ t_settle/3 = 6.7e-3 s；q9 ≥ 3/t_settle = 3/0.02",
+    "result": "q9 ≥ 150 s^-1",
+    "reference_scale": "q9 参考尺度：机电执行器 1e1–1e3 s^-1；光电探测 1e6–1e10 s^-1；热系统 1e-2–1 s^-1"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-FAST-001 [定理，马尔可夫系统]、§2.3.5 例 3（OU 过程：λ2=θ=MI 衰减速率）",
+    "md/information mechanics derivations.md B.7 稳定性分析（弛豫与谱）"
+  ],
+  "strictness": "定理（马尔可夫系统）",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

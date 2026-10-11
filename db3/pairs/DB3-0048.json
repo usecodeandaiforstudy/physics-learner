@@ -1,0 +1,65 @@
+{
+  "pair_id": "DB3-0048",
+  "domain": "aerospace",
+  "language": "en",
+  "requirement_text": "The attitude control loop must settle within 0.5 s to the ±2% band.",
+  "requirement_structured": {
+    "property_id": "response_speed",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "settling_time_s": 0.5,
+      "settling_band": "pm_2_percent"
+    },
+    "rv_hint": "programmatic_template",
+    "constraints": [],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-FAST-001"
+  ],
+  "info_metric_vector": {
+    "q9_spectral_gap": {
+      "direction": "lower_bound",
+      "expr": "ln(100)/t_settle = 4.6/0.5 = 9.2 s^-1",
+      "note": "表驱动生成（aerospace 域实例）"
+    }
+  },
+  "worked_example": {
+    "setup": "The attitude control loop must settle within 0.5 s to the ±2% band.",
+    "given": {
+      "settling_time_s": {
+        "value": 0.5,
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      },
+      "settling_band": {
+        "value": "pm_2_percent",
+        "unit": "as_declared",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "±2% 带内回稳 ≈ 4.6τ",
+    "result": "q9 ≥ 9.2 s^-1",
+    "reference_scale": "姿控 q9 参考尺度：1e0–1e2 s^-1"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-FAST-001",
+    "md/information mechanics derivations.md（对应规则推导）",
+    "aerospace 域需求（表驱动程序化生成，待人工复核）"
+  ],
+  "strictness": "定理（马尔可夫系统）",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-04",
+    "reviewer": "user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

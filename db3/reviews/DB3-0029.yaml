@@ -1,0 +1,34 @@
+review_record:
+  pair_id: DB3-0029
+  rule_ids:
+  - R-PRECISE-001
+  - R-ROBUST-001
+  domain: measurement
+  strictness: 推导
+  requirement_text: The inline pH sensor must achieve sigma_req = 0.02 pH in a single
+    reading while tolerating temperature drift over 15-35 C (interference Fisher <=
+    1e-2 K^-2).
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n·sigma_req^2)
+    q4_dpi_margin: lower_bound delta_dpi = 0.5 nats
+    q10_redundancy: increase >= ln(2)
+    q1_noise_direction: upper_bound lambda_max(g_eta_eta) <= 1e-2 K^-2
+  worked_example_result: q1 ≥ 2500 pH^-2；λ_max ≤ 1e-2 K^-2；q4 ≥ 0.5；q10 ≥ 0.693 nats
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-PRECISE-001 [定理]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

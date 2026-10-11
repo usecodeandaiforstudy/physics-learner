@@ -1,0 +1,28 @@
+review_record:
+  pair_id: DB3-0022
+  rule_ids:
+  - R-STABLE-001
+  domain: materials
+  strictness: 推导/类比
+  requirement_text: 磁存储位在工作温度下 10 年内不得热退磁：保持自由能垒不低于 40 k_B T。
+  q_summary:
+    q8_stability_margin: lower_bound E_req = 40 nats（k_B T=1 单位）
+  worked_example_result: ΔF‡ = 100 nats ≥ 40 nats ✓
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-STABLE-001 [推导/类比]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

@@ -1,0 +1,90 @@
+{
+  "pair_id": "DB3-0018",
+  "domain": "measurement",
+  "language": "zh",
+  "requirement_text": "现场流量传感器在振动与温漂双干扰下，流量估计标准差不超过 2%。",
+  "requirement_structured": {
+    "property_id": "robustness",
+    "target_value": {
+      "sigma_dimensionless_fraction": 0.02
+    },
+    "rv_hint": "joint_signal_noise_family",
+    "constraints": [
+      "vibration = 1_g_rms"
+    ],
+    "ambiguity_flags": [],
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_hint": "upper",
+    "quantity_bound_source": "human_confirmed",
+    "quantity_bound_review": "confirmed"
+  },
+  "rule_ids": [
+    "R-ROBUST-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "1/(n·sigma_req^2)",
+      "note": "信号 θ=流量方向"
+    },
+    "q4_dpi_margin": {
+      "direction": "lower_bound",
+      "expr": "delta_dpi = 0.5 nats"
+    },
+    "q10_redundancy": {
+      "direction": "increase",
+      "expr": ">= ln(2)"
+    },
+    "q1_noise_direction": {
+      "direction": "upper_bound",
+      "expr": "lambda_max(g_eta_eta) <= epsilon",
+      "note": "干扰 η=振动+温漂方向"
+    }
+  },
+  "worked_example": {
+    "setup": "工业流量计：信号=流量，干扰=振动+温漂",
+    "given": {
+      "sigma_req": {
+        "value": 0.02,
+        "unit": "dimensionless_fraction",
+        "is_bridge_constant": true
+      },
+      "epsilon": {
+        "value": 0.05,
+        "unit": "1/K^2",
+        "is_bridge_constant": true
+      },
+      "delta_dpi": {
+        "value": 0.5,
+        "unit": "nats",
+        "is_bridge_constant": true
+      },
+      "n": {
+        "value": 1,
+        "unit": "dimensionless_count",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "q1 ≥ 1/0.02² = 2500；λ_max ≤ 0.05 K^-2；q4 ≥ 0.5 nats；q10 ≥ ln2 nats",
+    "result": "q1 ≥ 2500；λ_max ≤ 0.05 K^-2；q4 ≥ 0.5 nats；q10 ≥ 0.693 nats",
+    "reference_scale": "工业现场 q1 参考尺度：1e3–1e5"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-ROBUST-001 [推导]（方向性分离）",
+    "md/information mechanics derivations.md A.7 信息论四件套（DPI）、§27 第二定律=DPI（q4 裕度依据）",
+    "md/physical to ai.md 对应四：FHN 拓扑保护↔对抗鲁棒性（q10 受保护信息位依据）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

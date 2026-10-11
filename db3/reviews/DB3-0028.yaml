@@ -1,0 +1,31 @@
+review_record:
+  pair_id: DB3-0028
+  rule_ids:
+  - R-STIFF-001
+  - R-FAST-001
+  domain: mechanics
+  strictness: 定理（马尔可夫系统）
+  requirement_text: 快速伺服平台又要硬又要快：刚度不低于 200 N/m，95% 响应不超过 10 ms。
+  q_summary:
+    q1_fisher_directional: lower_bound K_req/(k_B T)
+    q9_spectral_gap: lower_bound 3/t_settle（95% 建立 ≈ 3τ，一阶系统）
+  worked_example_result: q1 ≥ 4.8e22 m^-2；q9 ≥ 300 s^-1
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-STIFF-001 [定理]、§2.3.5
+    例 2（线性弹性谐振近似）
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

@@ -1,0 +1,94 @@
+{
+  "pair_id": "DB3-0030",
+  "domain": "thermal",
+  "language": "zh",
+  "requirement_text": "功率模块散热要快且稳：2 mm 铜层热锋 0.5 s 内传过，且结壳工作点距焊料熔化点的约化裕度不低于 0.2。",
+  "requirement_structured": {
+    "property_id": null,
+    "target_value": {
+      "kappa_m2_per_s": 8e-06,
+      "length_scale_m": 0.002,
+      "front_time_s": 0.5,
+      "delta_dimensionless": 0.2
+    },
+    "rv_hint": "field_time_slices+landau_order_parameter",
+    "constraints": [
+      "material = copper"
+    ],
+    "ambiguity_flags": [
+      "R-COND-001 二义性：文本'热锋传过'显式指向读向(a)（κ↑，q7↑）；显式消解，仍记录标志备查"
+    ],
+    "metric_direction": null,
+    "direction": null,
+    "quantity_bound": null,
+    "quantity_bound_hint": null,
+    "quantity_bound_source": "multi_constraint",
+    "quantity_bound_review": "n/a(组合对)"
+  },
+  "rule_ids": [
+    "R-COND-001",
+    "R-STABLE-001"
+  ],
+  "info_metric_vector": {
+    "q7_info_propagation_speed": {
+      "direction": "lower_bound",
+      "expr": "kappa_req/L",
+      "reading": "a_heat_front_fast"
+    },
+    "q8_stability_margin": {
+      "direction": "lower_bound",
+      "expr": "delta = (T_c - T_work)/T_c"
+    }
+  },
+  "worked_example": {
+    "setup": "功率模块：铜层 L=2 mm，τ=0.5 s；焊料 T_melt=456 K，结壳 T_work=350 K",
+    "given": {
+      "L": {
+        "value": 0.002,
+        "unit": "m",
+        "is_bridge_constant": true
+      },
+      "kappa": {
+        "value": 8e-06,
+        "unit": "m^2/s",
+        "is_bridge_constant": true
+      },
+      "front_time": {
+        "value": 0.5,
+        "unit": "s",
+        "is_bridge_constant": true
+      },
+      "T_c": {
+        "value": 456,
+        "unit": "K",
+        "is_bridge_constant": true
+      },
+      "T_work": {
+        "value": 350,
+        "unit": "K",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "κ_req = L²/τ = 4e-6/0.5 = 8e-6 m²/s；q7 ≥ 8e-6/2e-3 = 4e-3 m/s；q8 = (456−350)/456 = 0.23",
+    "result": "q7 ≥ 4e-3 m/s；q8 = 0.23 ≥ 0.2 ✓",
+    "reference_scale": "q7 参考尺度：功率器件热输运 1e-3–1e-1 m/s；q8 工程裕度 0.1–0.5"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]（二义性规则）、§2.3.5 例 1（一维热传导：逐模式 MI 与 DPI 裕度）",
+    "md/information mechanics derivations.md §9 锥结构与类光方程（q7=c_info 的 Fisher 锥依据）",
+    "cross domain rl architecture plan.md §2.3.3 R-STABLE-001 [推导/类比]",
+    "md/physical to ai.md 对应二：FHN 临界现象↔信息传播相变（临界点距离，ξ∝|I−I_c|^{−ν}）",
+    "md/information mechanics derivations.md B.7 稳定性分析、§29（Landau 双阱与热力学对应）"
+  ],
+  "strictness": "推导/类比",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

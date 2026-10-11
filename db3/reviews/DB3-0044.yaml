@@ -1,0 +1,28 @@
+review_record:
+  pair_id: DB3-0044
+  rule_ids:
+  - R-PRECISE-001
+  domain: acoustics
+  strictness: 定理
+  requirement_text: 声呐方位估计须在 500 个快拍后把角度不确定度压到 0.01 rad 以内。
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n·sigma_req^2) = 1/(500·1e-4) = 20 rad^-2
+  worked_example_result: q1 ≥ 20 rad^-2
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-PRECISE-001 [定理]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: user
+    decision: accept
+    findings: 物理侧：声呐方位估计 σ≤0.01 rad @500 快拍；角度量与 θ 同量纲
+    date: '2026-10-04'
+  reviewer_b:
+    name: user
+    decision: accept
+    findings: 信息论侧：q1=1/(500·1e-4)=20 rad^-2 与 R-PRECISE-001 一致；rad 单位已入解析器单位表
+    date: '2026-10-04'

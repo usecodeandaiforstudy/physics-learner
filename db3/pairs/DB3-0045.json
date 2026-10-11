@@ -1,0 +1,66 @@
+{
+  "pair_id": "DB3-0045",
+  "domain": "acoustics",
+  "language": "en",
+  "requirement_text": "The acoustic emission monitoring must localize a crack to within 0.05 m using 800 events.",
+  "requirement_structured": {
+    "property_id": "precision",
+    "metric_direction": "bound_below",
+    "direction": "bound_below",
+    "quantity_bound": "upper",
+    "quantity_bound_source": "declared",
+    "quantity_bound_review": "ok",
+    "target_value": {
+      "sigma_m": 0.05,
+      "n_samples_count": 800
+    },
+    "rv_hint": "toa_estimation",
+    "constraints": [
+      "events = 800"
+    ],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-PRECISE-001"
+  ],
+  "info_metric_vector": {
+    "q1_fisher_directional": {
+      "direction": "lower_bound",
+      "expr": "1/(n·sigma_req^2) = 1/(800·0.0025) = 0.5 m^-2"
+    }
+  },
+  "worked_example": {
+    "setup": "acoustic emission localization, σ_req = 0.05 m, n = 800 events",
+    "given": {
+      "sigma_req": {
+        "value": 0.05,
+        "unit": "m",
+        "is_bridge_constant": true
+      },
+      "n": {
+        "value": 800,
+        "unit": "count",
+        "is_bridge_constant": false
+      }
+    },
+    "computation": "Cramér–Rao: q1 ≥ 1/(n·σ²) = 1/(800·2.5e-3)",
+    "result": "q1 ≥ 0.5 m^-2",
+    "reference_scale": "声发射定位 q1 参考尺度：1e-1–1e2 m^-2"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-PRECISE-001 [定理]",
+    "md/information mechanics derivations.md §1 定理 1.3（Cramér–Rao）",
+    "声学域第 2 条需求（程序化生成，待人工复核）"
+  ],
+  "strictness": "定理",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-10-04",
+    "reviewer": "user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

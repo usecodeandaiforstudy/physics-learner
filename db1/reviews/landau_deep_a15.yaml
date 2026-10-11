@@ -1,0 +1,27 @@
+review_record:
+  entry_system_id: landau_deep_a15
+  family: landau
+  domain: thermodynamics
+  scan_param: a
+  machine_gate:
+    schema_valid: true
+    convention_check: true
+    computability: true
+    analytic_compare: true
+    errors: []
+    warnings:
+    - 未提供 fingerprint_expectation，跳过解析对照
+  provenance_source: AI+verified
+  anchor_eligible: false
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  final_destination: null
+  final_decision: null

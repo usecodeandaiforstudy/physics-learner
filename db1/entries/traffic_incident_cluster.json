@@ -1,0 +1,57 @@
+{
+  "system_id": "traffic_incident_cluster",
+  "domain": "traffic",
+  "name": "事故成簇计数",
+  "family": "negbin",
+  "equations": {
+    "latex": "P(n) = \\binom{n+k-1}{n} p^k (1-p)^n",
+    "sympy": "P = binomial(n+k-1,n)*p**k*(1-p)**n"
+  },
+  "parameters": [
+    {
+      "name": "k",
+      "symbol": "k",
+      "range": [
+        1.0,
+        10.0
+      ],
+      "default": 3.5
+    },
+    {
+      "name": "p",
+      "symbol": "p",
+      "range": [
+        0.05,
+        0.5
+      ],
+      "default": 0.1
+    }
+  ],
+  "channel_template": "CT-NEGBIN-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "k/(p**2*(1-p))",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "k/(p**2*(1-p))",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "事故聚集统计；traffic 域实例（程序化生成，表驱动批次 2）",
+  "scan_param": "p",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

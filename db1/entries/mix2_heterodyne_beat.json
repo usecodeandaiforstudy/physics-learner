@@ -1,0 +1,55 @@
+{
+  "system_id": "mix2_heterodyne_beat",
+  "domain": "electromagnetism",
+  "name": "外差拍频信号（双频分量）",
+  "family": "gaussian_mixture2",
+  "equations": {
+    "latex": "p(x) = \\tfrac12 N(x|{-}d/2,\\sigma) + \\tfrac12 N(x|{+}d/2,\\sigma)",
+    "sympy": "p = N(x, -d/2, sigma)/2 + N(x, +d/2, sigma)/2"
+  },
+  "parameters": [
+    {
+      "name": "d",
+      "symbol": "d",
+      "range": [
+        0.05,
+        6.0
+      ],
+      "default": 2.0
+    },
+    {
+      "name": "w",
+      "symbol": "w",
+      "range": [
+        0.1,
+        0.9
+      ],
+      "default": 0.5
+    },
+    {
+      "name": "sigma",
+      "symbol": "\\sigma",
+      "range": [
+        0.5,
+        2.0
+      ],
+      "default": 1.0
+    }
+  ],
+  "channel_template": "CT-MIX-001",
+  "fingerprint_expectation": [],
+  "strictness_level": "定理",
+  "source_ref": "标准混合模型（信息几何）",
+  "scan_param": "d",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-02",
+    "reviewers": [
+      "user"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

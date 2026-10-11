@@ -1,0 +1,27 @@
+review_record:
+  entry_system_id: lc_room_temp
+  family: lc_circuit
+  domain: electromagnetism
+  scan_param: capacitance
+  machine_gate:
+    schema_valid: true
+    convention_check: true
+    computability: true
+    analytic_compare: true
+    errors: []
+    warnings: []
+  provenance_source: AI+verified
+  anchor_eligible: false
+  reviewer_a:
+    name: 你的名字
+    decision: accept
+    findings: 能量均分与 Fisher 式核对一致
+    date: '2026-10-07'
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  final_destination: DB2
+  final_decision: accept
+  human_review_status: spot_checked

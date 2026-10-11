@@ -1,0 +1,26 @@
+review_record:
+  entry_system_id: food_sterilization_fraction
+  family: beta
+  domain: food
+  scan_param: alpha
+  machine_gate:
+    schema_valid: true
+    convention_check: true
+    computability: true
+    analytic_compare: true
+    errors: []
+    warnings: []
+  provenance_source: AI+verified
+  anchor_eligible: false
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  final_destination: null
+  final_decision: null

@@ -1,0 +1,284 @@
+# =============================================================================
+# DB3 需求映射规则注册表 v0（8 条种子规则 + 1 条兜底）
+# -----------------------------------------------------------------------------
+# 依据：cross domain rl architecture plan.md §2.3.3（规则内容）、§2.3.7（YAML 格式）、
+#       §2.3.2（q1–q10 分量定义）。
+# 红线：
+#   - 规则无 RV 定义不得入库（§2.3.8 第 1 条）。
+#   - 桥接常数必须显式带单位并标 is_bridge_constant: true（§2.3.8 第 3 条）。
+#   - 规则变更 = B 版本变更 = 触发 DB2 重编码。
+# 约定（与 db1/conventions.yaml 对齐）：
+#   - 信息量一律自然对数，单位 nats（禁止 bits）。
+#   - sigma 一律指标准差（禁止与方差混用）。
+#   - SDE 默认 Itô；热浴默认 k_B T = 1（物理单位只经桥接常数进入）。
+# =============================================================================
+
+rules_version: "0.2.0"
+updated: "2026-09-29"
+
+conventions:
+  log_base: natural
+  log_base_unit: nats
+  sigma_meaning: standard_deviation
+  sde_calculus: ito
+  thermal_bath_default_kT: 1.0
+  note: "物理量纲只允许经 bridge_law.bridge_constants 进入；q 分量无量纲当且仅当
+    参数方向无量纲（有量纲方向如位移/温度/长度，q 带 1/θ² 量纲）；B v1 数据化时
+    输入空间量纲归一为独立约定（v0.2.0 精确化）。"
+
+rules:
+
+  # ---------------------------------------------------------------------------
+  R-STIFF-001:
+    ontology_property_id: stiffness
+    domain: [mechanics, materials]
+    physical_predicate: "刚度大 / 弹性模量高 / 硬"
+    rv_definition: "Gibbs 微态分布 p(x|λ) ∝ exp(−U(x;λ)/(k_B T))，λ 为外加应变（无量纲）或位移"
+    parameter_direction: "λ（应变/位移方向）"
+    information_functional: "g_λλ = Var(∂_λ U)/(k_B T)^2"
+    bridge_law:
+      expr: "C_eff = (k_B T / V) · g_λλ"
+      bridge_constants:
+        - {symbol: "k_B T", unit: "J", is_bridge_constant: true}
+        - {symbol: "V", unit: "m^3", is_bridge_constant: true}
+      note: >-
+        架构文档 §2.3.3 原文写作 C_eff=(V/(k_B T))·g_λλ，与同节方向性下界
+        q1 ≥ (k_B T/V)·C_req 互为倒数；按涨落-响应定理标准形式
+        Var(λ)=k_B T/(C·V) ⟹ g_λλ=C·V/(k_B T) ⟹ C=(k_B T/V)·g_λλ，
+        与 DB1 elastic/harmonic 族解析指纹 g=k/(k_B T) 一致。以本文件为准，
+        已在种子对 DB3-0001 的 metric_rationale 中记录该勘误。
+    relation: "positive_monotone"
+    q_update:
+      q1_fisher_directional:
+        direction: "lower_bound"
+        expr: "C_req · V / (k_B T)"
+        note: "由 bridge_law 反解：g_λλ = C·V/(k_B T)；λ=应变（无量纲）。
+          V 进分子（自平均：大体积→应变热涨落小→可区分性高）。
+          位移方向形式：q1 = K_req/(k_B T)（K_req=C_eff·V 总刚度，q1 量纲 1/长度²，
+          由 bridge_law 代入推出）；种子对 0001/0002/0028 用此形式
+          （target_value_keys 的 N/m 路径）。"
+    strictness: "定理"
+    target_units_accepted: ["Pa", "N/m"]
+    target_value_keys: ["stiffness_N_per_m", "modulus_Pa", "equivalent_modulus_Pa"]
+    source: >-
+      涨落-响应定理（统计力学）；md/information mechanics derivations.md
+      §29 涨落-耗散定理与信息理想气体（约 L1120–1147）、§1 定理 1.3；
+      cross domain rl architecture plan.md §2.3.3 R-STIFF-001、§2.3.5 例 2。
+
+  # ---------------------------------------------------------------------------
+  R-PRECISE-001:
+    ontology_property_id: precision
+    domain: [measurement, control]
+    physical_predicate: "可精密测量 / 可精密控制"
+    rv_definition: "n 个 i.i.d. 观测样本 x_1..x_n ~ p(x|θ)，θ 为被测/被控参数"
+    parameter_direction: "θ（被估参数方向）"
+    information_functional: "g_θθ = E[(∂_θ ln p)^2]"
+    bridge_law:
+      expr: "Cramér–Rao：Var(θ̂) ≥ 1/(n · g_θθ)"
+      bridge_constants:
+        - {symbol: "n", unit: "count", is_bridge_constant: false}
+        - {symbol: "sigma_req", unit: "same_as_theta", is_bridge_constant: true}
+      note: "sigma_req 与 θ 同单位（kT=1 下信息侧无量纲，精度目标经 σ_req 进入）。"
+    relation: "negative_monotone_var_vs_fisher"
+    q_update:
+      q1_fisher_directional:
+        direction: "lower_bound"
+        expr: "1/(n · sigma_req^2)"
+    strictness: "定理"
+    target_units_accepted: ["K", "m", "dimensionless_fraction", "pH"]
+    target_value_keys: ["sigma_K", "sigma_m", "sigma_dimensionless_fraction", "sigma_pH", "sigma_rad", "n_samples_count"]
+    source: >-
+      md/information mechanics derivations.md §1 记分函数与 Cramér–Rao 下界
+      （定理 1.3，约 L73–97）；cross domain rl architecture plan.md §2.3.3 R-PRECISE-001。
+
+  # ---------------------------------------------------------------------------
+  R-FAST-001:
+    ontology_property_id: response_speed
+    domain: [control, measurement, electronics, thermal]
+    physical_predicate: "响应快 / 弛豫快 / 恢复快"
+    rv_definition: "马尔可夫过程的条件转移链 p(x_{t+dt}|x_t)，Fokker–Planck 生成元谱（Itô）"
+    parameter_direction: "谱方向（第二特征值 λ2）"
+    information_functional: "λ2 = Fokker–Planck 生成元第二特征值（弛豫 τ = 1/λ2）"
+    bridge_law:
+      expr: "τ = 1/λ2；OU 过程：λ2 = θ（回复速率 = 谱隙 = MI 衰减速率）"
+      bridge_constants:
+        - {symbol: "tau_req", unit: "s", is_bridge_constant: true}
+      note: "马尔可夫系统内为定理；非马尔可夫系统降级为类比，须在种子对 strictness 标注。
+        澄清（v0.2.0）：谱隙 λ2=θ 是状态弛豫率；OU 互信息衰减率是 2θ
+        （MI(t)≈ρ(t)²/2∝e^(−2θt)）。建立时间换算（95%≈3τ、±1%≈4.6τ、98%≈3.9τ）
+        用状态弛豫 θ（工程惯例，正确），勿与 MI 衰减率 2θ 混用。"
+    relation: "positive_monotone"
+    q_update:
+      q9_spectral_gap:
+        direction: "lower_bound"
+        expr: "1/tau_req"
+    strictness: "定理（马尔可夫系统）"
+    target_units_accepted: ["s"]
+    target_value_keys: ["tau_s", "settling_time_s", "settling_band"]
+    source: >-
+      cross domain rl architecture plan.md §2.3.3 R-FAST-001、§2.3.5 例 3（OU：λ2=θ）；
+      md/information mechanics derivations.md B.7 稳定性分析。
+
+  # ---------------------------------------------------------------------------
+  R-COND-001:
+    ontology_property_id: transport
+    domain: [thermal, electronics]
+    physical_predicate: "导热快 / 输运快（二义性）"
+    rv_definition: "场量时间切片链 T_k = u(·, t_k)，通道核 = 热核 G(Δt)=(4πκΔt)^{-1/2} exp(−x²/4κΔt)，加观测噪声 σ_n"
+    parameter_direction: "κ（扩散率）方向"
+    information_functional: "模式幅值 a_k(t)=a_k(0)·exp(−κk²t)；单模式互信息 I_k(t)=½·ln(1+S_k(0)·exp(−2κk²t)/σ_n²)"
+    bridge_law:
+      readings:
+        a_heat_front_fast:
+          meaning: "热锋/扰动传遍尺度 L 要快：τ ≈ L²/κ"
+          expr: "q7 ≥ kappa_req / L（v_info ≈ κ/L，扩散锋表观速度）"
+          bridge_constants:
+            - {symbol: "kappa", unit: "m^2/s", is_bridge_constant: true}
+            - {symbol: "L", unit: "m", is_bridge_constant: true}
+        b_fine_structure_fidelity:
+          meaning: "细结构（高波数模式）保真：高频 I_k 衰减要慢，⟺ κ 要小"
+          expr: "q6: ξ(t_obs)=√(2·κ·t_obs) ≤ ℓ_req（等价 κ ≤ ℓ_req²/(2·t_obs)；严格半衰期式 κ ≤ ln2/(2·k²·t_obs)，k=2π/ℓ_req）"
+          bridge_constants:
+            - {symbol: "kappa", unit: "m^2/s", is_bridge_constant: true}
+            - {symbol: "ell_req", unit: "m", is_bridge_constant: true}
+            - {symbol: "t_obs", unit: "s", is_bridge_constant: true}
+      note: >-
+        两条读向方向相反（(a) κ↑，(b) κ↓）。所有命中本规则的种子对必须带
+        ambiguity_flags，缺省取 (a) 并记录标志，禁止静默选择（§2.3.8 第 2 条）。
+    relation: "ambiguous_two_readings"
+    q_update:
+      q7_info_propagation_speed: {direction: "lower_bound", expr: "kappa_req/L", reading: "a"}
+      q6_correlation_length: {direction: "upper_bound", expr: "ell_req", reading: "b"}
+    strictness: "推导"
+    target_units_accepted: ["m^2/s", "s"]
+    target_value_keys: ["kappa_m2_per_s", "front_time_s", "length_scale_m", "ell_req_m", "t_obs_s"]
+    source: >-
+      cross domain rl architecture plan.md §2.3.3 R-COND-001、§2.3.5 例 1（一维热传导：
+      逐模式 MI 与 DPI 裕度）；md/information mechanics derivations.md §9 锥结构与类光方程。
+
+  # ---------------------------------------------------------------------------
+  R-ROBUST-001:
+    ontology_property_id: robustness
+    domain: [electronics, measurement, communication, mechanics]
+    physical_predicate: "鲁棒 / 抗噪 / 抗干扰"
+    rv_definition: "联合参数 (θ_signal, η_noise) 下的观测分布族 p(x|θ,η)：θ 为信号参数，η 为干扰/漂移参数"
+    parameter_direction: "信号方向 θ 取下界；干扰方向 η 取上界"
+    information_functional: "信号方向 g_θθ（下界）；干扰方向 λ_max(g_ηη)（上界）"
+    bridge_law:
+      expr: "方向性分离：λ_max(g_ηη) ≤ ε（干扰不可分辨化），g_θθ ≥ 1/(n·σ_req²)（信号可分辨）"
+      bridge_constants:
+        - {symbol: "epsilon", unit: "1/eta^2", is_bridge_constant: true}
+        - {symbol: "delta_dpi", unit: "nats", is_bridge_constant: true}
+      note: "同时要求 q4（DPI 裕度）≥ δ 与 q10（冗余）↑——拓扑/对称性保护的编码对噪声免疫。
+        干扰方向分量 λ_max(g_ηη) ≤ ε（见种子对 q1_noise_direction）暂未在 q_update
+        注册（composer v0 不发射该分量；待 B v1 正式注册）。"
+    relation: "directional_separation"
+    q_update:
+      q1_fisher_directional: {direction: "lower_bound", expr: "1/(n·sigma_req^2)"}
+      q4_dpi_margin: {direction: "lower_bound", expr: "delta_dpi"}
+      q10_redundancy: {direction: "increase", expr: ">= ln(2)（≥ ln 2 nats 受保护信息；nats 约定，禁 bits）"}
+    strictness: "推导"
+    target_units_accepted: ["dimensionless_fraction"]
+    target_value_keys: ["sigma_dimensionless_fraction", "sigma_rad", "sigma_pH"]
+    source: >-
+      md/information mechanics derivations.md A.7 信息论四件套（DPI）、§27 第二定律=DPI；
+      md/physical to ai.md 对应四：FHN 拓扑保护 ↔ 对抗鲁棒性（拓扑电荷对噪声免疫）；
+      cross domain rl architecture plan.md §2.3.3 R-ROBUST-001。
+
+  # ---------------------------------------------------------------------------
+  R-STABLE-001:
+    ontology_property_id: stability
+    domain: [materials, thermal]
+    physical_predicate: "不易相变 / 工作点稳定"
+    rv_definition: "Landau 序参量平衡分布 p(φ) ∝ exp(−(a·φ²/2 + b·φ⁴/4)/(k_B T))（DB1 landau 族）或一般 Gibbs 态"
+    parameter_direction: "温度/控制参数 β 方向"
+    information_functional: "q8 = (β_c − β)/β_c（距相变点约化距离）或自由能垒 ΔF‡"
+    bridge_law:
+      expr: "q8 ≥ δ，或 ΔF‡ ≥ E_req（k_B T=1 单位下以 nats 计；Landau 双阱：ΔF‡ = a²/(4·b·k_B T)）"
+      bridge_constants:
+        - {symbol: "delta", unit: "dimensionless", is_bridge_constant: true}
+        - {symbol: "E_req", unit: "nats", is_bridge_constant: true}
+      note: "工作点距 IB 相变点/热相变点的裕度；两类判据（约化距离 / 能垒）择一或并列。
+        δ 定义（v0.2.0 精确化）：温度约化距离 δ=(T_c−T)/T_c；β 空间距离为
+        (β−β_c)/β_c=(T_c−T)/T_work，两者差因子 T_c/T_work，使用时须标注所选定义。"
+    relation: "positive_monotone"
+    q_update:
+      q8_stability_margin: {direction: "lower_bound", expr: "delta 或 E_req"}
+    strictness: "推导/类比"
+    target_units_accepted: ["K", "dimensionless"]
+    target_value_keys: ["delta_dimensionless", "E_req_nats", "T_c_K", "T_work_K"]
+    source: >-
+      cross domain rl architecture plan.md §2.3.3 R-STABLE-001；md/physical to ai.md
+      对应二：FHN 临界现象 ↔ 信息传播相变（临界点距离）；
+      md/information mechanics derivations.md B.7 稳定性分析、§29（Landau/热力学对应）。
+
+  # ---------------------------------------------------------------------------
+  R-ADAPT-001:
+    ontology_property_id: adaptability
+    domain: [measurement, control, electronics]
+    physical_predicate: "多环境适应 / 多工况可用"
+    rv_definition: "环境变量 X ~ p(X)（多工况分布）经编码器 T 的信道 p(T|X)"
+    parameter_direction: "容量方向"
+    information_functional: "q5 = max_{p(X)} I(X;T)（信道容量）；q2 = ln det g（后验锐度）"
+    bridge_law:
+      expr: "q5 ≥ C_req（分辨 M 个工况需 C_req ≥ ln M nats）+ 平坦极小：q2 上界（det g 小 = 后验宽容度大）"
+      bridge_constants:
+        - {symbol: "C_req", unit: "nats", is_bridge_constant: true}
+      note: "类比级：容量-可辨识性论证是定理（对离散工况），'平坦极小⟺适应' 是类比。"
+    relation: "positive_monotone"
+    q_update:
+      q5_channel_capacity: {direction: "lower_bound", expr: "ln(M)"}
+      q2_posterior_sharpness: {direction: "upper_bound", expr: "0（det g ≤ 1）",
+        note: "det g 有量纲（θ⁻²ᵈ）；「≤1」需指定参考度量（建议 Jeffreys 体积归一），
+          B v1 数据化前须定此约定。"}
+    strictness: "类比"
+    target_units_accepted: ["nats", "count"]
+    target_value_keys: ["n_environments_count", "C_req_nats"]
+    source: >-
+      cross domain rl architecture plan.md §2.3.3 R-ADAPT-001；md/ai to physical.md
+      对应二：信道容量重入相变（容量-自由度关系）；md/Cover_Thomas_入门总结.md 第五章信道容量。
+
+  # ---------------------------------------------------------------------------
+  R-TOUGH-001:
+    ontology_property_id: toughness
+    domain: [materials, mechanics]
+    physical_predicate: "韧 / 抗断裂 / 耐冲击"
+    rv_definition: "断裂路径上的自由能景观 F(路径参数)（后验多谷结构）"
+    parameter_direction: "能垒高度与谷数方向"
+    information_functional: "q8（自由能垒 ΔF‡）+ 后验多谷（亚稳谷数目）"
+    bridge_law:
+      expr: "断裂前吸能 ≈ 路径自由能垒高度 × 谷体积：q8↑ + 后验多谷结构"
+      bridge_constants:
+        - {symbol: "E_req", unit: "nats", is_bridge_constant: true}
+      note: >-
+        严格性低（类比）。红线：本规则种子对须标 requires_db5_calibration=true，
+        未经 DB5 验证回流校准不得进入 B v1 训练集（arch §2.3.3 原文）。
+    relation: "positive_monotone"
+    q_update:
+      q8_stability_margin: {direction: "lower_bound", expr: "E_req"}
+      q10_redundancy: {direction: "increase", expr: "多谷（亚稳谷数目 ≥ 3）"}
+    strictness: "类比"
+    target_units_accepted: ["nats", "MPa*m^0.5"]
+    target_value_keys: ["E_req_nats", "n_valleys_count"]
+    source: >-
+      cross domain rl architecture plan.md §2.3.3 R-TOUGH-001；md/physical to ai.md
+      总论表第 7 条（锐利/平坦极小值 ↔ 自旋玻璃自由能景观）及 B.7 稳定性分析。
+
+  # ---------------------------------------------------------------------------
+  R-NOMAP-000:
+    ontology_property_id: unmapped
+    domain: []
+    physical_predicate: "（兜底：规则库未命中的任意谓词）"
+    rv_definition: "（无——无 RV 定义不得硬映射，本条即兜底）"
+    parameter_direction: "（无）"
+    information_functional: "（无）"
+    bridge_law:
+      expr: "返回 UNMAPPED 标志 + 最近邻规则建议，禁止硬映射；转入人工队列，结果回写 DB3"
+      bridge_constants: []
+    relation: "none"
+    q_update: {}
+    strictness: null
+    target_units_accepted: []
+    source: >-
+      cross domain rl architecture plan.md §2.3.3 R-NOMAP-000、§2.3.8 第 5 条
+      （规则覆盖度：v0 只保证热/扩散、弹性、平衡态统计三类种子领域）。

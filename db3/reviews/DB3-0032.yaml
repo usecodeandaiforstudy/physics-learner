@@ -1,0 +1,28 @@
+review_record:
+  pair_id: DB3-0032
+  rule_ids:
+  - R-NOMAP-000
+  domain: general
+  strictness: null
+  requirement_text: The whole assembly should cost under $5 in volume production.
+  q_summary: null
+  worked_example_result: null
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-NOMAP-000：规则库未命中
+    → UNMAPPED+最近邻规则建议，禁止硬映射，转入人工队列
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

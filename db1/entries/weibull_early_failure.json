@@ -1,0 +1,57 @@
+{
+  "system_id": "weibull_early_failure",
+  "domain": "materials",
+  "name": "早期失效（婴幼期失效型）",
+  "family": "weibull",
+  "equations": {
+    "latex": "p(x) = \\frac{k}{\\lambda}\\left(\\frac{x}{\\lambda}\\right)^{k-1} e^{-(x/\\lambda)^k}",
+    "sympy": "p = (k/lam)*(x/lam)**(k-1)*exp(-(x/lam)**k)"
+  },
+  "parameters": [
+    {
+      "name": "shape",
+      "symbol": "k",
+      "range": [
+        0.5,
+        5.0
+      ],
+      "default": 0.8
+    },
+    {
+      "name": "scale",
+      "symbol": "\\lambda",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 3.0
+    }
+  ],
+  "channel_template": "CT-WEIBULL-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "shape^2/scale^2 + ((1 - EulerGamma)^2 + pi^2/6)/shape^2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "pi^2/(6*scale^2)",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "Weibull 1951（k<1 递减失效率）",
+  "scan_param": "shape",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-09-27",
+    "reviewers": [
+      "user"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

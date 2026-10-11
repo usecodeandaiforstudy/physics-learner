@@ -1,0 +1,32 @@
+review_record:
+  pair_id: DB3-0205
+  rule_ids:
+  - R-TOUGH-001
+  domain: mechanics
+  strictness: 类比
+  requirement_text: The bracket must survive 1e6 cycles at 80% of yield without crack
+    initiation.
+  q_summary:
+    q8_stability_margin: lower_bound E_req
+    q10_redundancy: increase 亚稳谷数目 ≥ 3（多谷结构）
+  worked_example_result: q8 ≥ 5 nats；多谷 3 个
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-TOUGH-001 [类比]：须
+    DB5 校准后才可入 B v1 训练集
+  ambiguity_flags: []
+  requires_db5_calibration: true
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: reviewer
+    decision: accept
+    findings: 物理侧（表驱动批）：需求量与该域物理场景匹配、目标值与量纲经脚本核算；规则 strictness 与 rules.yaml 契约一致
+    date: '2026-10-07'
+  reviewer_b:
+    name: reviewer
+    decision: accept
+    findings: 信息论侧（表驱动批）：q 向量与规则 q_update 一致、桥接常数标注正确；quantity_bound（物理向）与 direction（度量向）双标注自洽；R-COND
+      读向声明、R-TOUGH 的 DB5 校准标注齐备
+    date: '2026-10-07'

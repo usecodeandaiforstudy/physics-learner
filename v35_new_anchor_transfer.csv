@@ -1,0 +1,11 @@
+mode,pair_id,domain,conf,exact,abstained,top1_hit
+v2,DB3-0196,biomedical,0.9976105690002441,True,False,True
+v2,DB3-0197,biomedical,0.5422764420509338,False,False,False
+v2,DB3-0198,communication,0.32394516468048096,False,True,False
+v2,DB3-0199,communication,0.955901563167572,True,False,True
+v2,DB3-0200,geophysics,0.9991894364356995,True,False,True
+v2,DB3-0201,geophysics,0.3017594516277313,False,True,False
+v2,DB3-0202,measurement,0.5840633511543274,True,False,True
+v2,DB3-0203,measurement,0.9963982105255127,True,False,True
+v2,DB3-0204,mechanics,0.7888898849487305,False,False,True
+v2,DB3-0205,mechanics,0.00019827758660539985,False,True,False

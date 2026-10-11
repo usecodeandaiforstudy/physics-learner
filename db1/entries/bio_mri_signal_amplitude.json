@@ -1,0 +1,45 @@
+{
+  "system_id": "bio_mri_signal_amplitude",
+  "domain": "biomedical",
+  "name": "MRI 幅值信号（包络分布）",
+  "family": "rayleigh",
+  "equations": {
+    "latex": "p(x) = \\frac{x}{\\sigma^2} e^{-x^2/(2\\sigma^2)}",
+    "sympy": "p = (x/sigma**2)*exp(-x**2/(2*sigma**2))"
+  },
+  "parameters": [
+    {
+      "name": "sigma",
+      "symbol": "\\sigma",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 0.9
+    }
+  ],
+  "channel_template": "CT-RAYLEIGH-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "4/sigma**2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "4/sigma**2",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准统计（瑞利包络）；MRI 幅值图像噪声模型",
+  "scan_param": "sigma",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

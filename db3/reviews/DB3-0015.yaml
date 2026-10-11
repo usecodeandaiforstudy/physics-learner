@@ -1,0 +1,30 @@
+review_record:
+  pair_id: DB3-0015
+  rule_ids:
+  - R-COND-001
+  domain: electronics
+  strictness: 推导
+  requirement_text: 功率芯片要把局部热点在 1 ms 内拉平到 100 μm 尺度以下。
+  q_summary:
+    q7_info_propagation_speed: lower_bound kappa_req/L
+  worked_example_result: q7 ≥ 0.1 m/s
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]（二义性规则）、§2.3.5
+    例 1（一维热传导：逐模式 MI 与 DPI 裕度）
+  ambiguity_flags:
+  - R-COND-001 二义性：文本'把局部热点拉平'显式指向读向(a) 热锋快（κ↑，q7↑）；显式消解，仍记录标志备查
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

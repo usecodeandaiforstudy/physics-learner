@@ -1,0 +1,45 @@
+{
+  "system_id": "geometric_defect_search",
+  "domain": "materials",
+  "name": "缺陷搜索（首缺陷检查数）",
+  "family": "geometric",
+  "equations": {
+    "latex": "P(k) = p(1-p)^{k-1}",
+    "sympy": "P = p*(1-p)**(k-1)"
+  },
+  "parameters": [
+    {
+      "name": "p",
+      "symbol": "p",
+      "range": [
+        0.05,
+        0.5
+      ],
+      "default": 0.2
+    }
+  ],
+  "channel_template": "CT-GEOM-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "1/(p**2*(1-p))",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "1/(p**2*(1-p))",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准概率论（几何分布）",
+  "scan_param": "p",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

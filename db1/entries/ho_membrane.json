@@ -1,0 +1,68 @@
+{
+  "system_id": "ho_membrane",
+  "domain": "mechanics",
+  "name": "薄膜振动模",
+  "family": "harmonic_oscillator",
+  "equations": {
+    "latex": "H = p^2/(2m) + \\tfrac12 m\\omega^2 x^2",
+    "sympy": "H = p**2/(2*m) + m*omega**2*x**2/2"
+  },
+  "parameters": [
+    {
+      "name": "m",
+      "symbol": "m",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 0.8
+    },
+    {
+      "name": "omega",
+      "symbol": "\\omega",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 0.8
+    },
+    {
+      "name": "kT",
+      "symbol": "k_B T",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.5,
+      "is_bridge_constant": true,
+      "unit": "energy"
+    }
+  ],
+  "channel_template": "CT-EQ-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "3*m*omega^2/kT",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "2*m^2*omega^4/kT^2",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "Pathria & Beale, Ch.3",
+  "scan_param": "omega",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

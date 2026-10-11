@@ -1,0 +1,45 @@
+{
+  "system_id": "nuclear_neutron_scatter_amplitude",
+  "domain": "nuclear",
+  "name": "中子散射幅值",
+  "family": "rayleigh",
+  "equations": {
+    "latex": "p(x) = \\frac{x}{\\sigma^2} e^{-x^2/(2\\sigma^2)}",
+    "sympy": "p = (x/sigma**2)*exp(-x**2/(2*sigma**2))"
+  },
+  "parameters": [
+    {
+      "name": "sigma",
+      "symbol": "\\sigma",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.1
+    }
+  ],
+  "channel_template": "CT-RAYLEIGH-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "4/sigma**2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "4/sigma**2",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "散射统计；nuclear 域实例（程序化生成，表驱动批次 2）",
+  "scan_param": "sigma",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

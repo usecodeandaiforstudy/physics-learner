@@ -1,0 +1,28 @@
+review_record:
+  pair_id: DB3-0040
+  rule_ids:
+  - R-PRECISE-001
+  domain: energy
+  strictness: 定理
+  requirement_text: 电池 SOC 估计须在 300 个采样点后把相对不确定度压到 1% 以内。
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n·sigma_req^2) = 1/(300·1e-4) = 33.33
+  worked_example_result: q1 ≥ 33.33
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-PRECISE-001 [定理]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: user
+    decision: accept
+    findings: 物理侧：SOC 估计相对不确定度由 Cramér-Rao 界刻画；σ_req=1% 与 θ 同量纲；n=300 由采样方案给定
+    date: '2026-10-04'
+  reviewer_b:
+    name: user
+    decision: accept
+    findings: 信息论侧：q1=1/(300·1e-4)=33.3 与 R-PRECISE-001 一致；direction=bound_below（度量向）+quantity_bound=upper（物理上界）正确
+    date: '2026-10-04'

@@ -1,0 +1,30 @@
+review_record:
+  pair_id: DB3-0021
+  rule_ids:
+  - R-STABLE-001
+  domain: materials
+  strictness: 推导/类比
+  requirement_text: The shape-memory alloy actuator must operate with reduced distance
+    at least delta = 0.2 from the order-disorder transition, equivalently a free-energy
+    barrier of at least 3 nats.
+  q_summary:
+    q8_stability_margin: lower_bound delta 或 E_req（k_B T=1 单位，nats）
+  worked_example_result: ΔF‡ = 4 nats ≥ 3 nats ✓（q8 判据通过）
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-STABLE-001 [推导/类比]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

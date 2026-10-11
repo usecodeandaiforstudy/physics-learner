@@ -1,0 +1,30 @@
+review_record:
+  pair_id: DB3-0024
+  rule_ids:
+  - R-ADAPT-001
+  domain: control
+  strictness: 类比
+  requirement_text: The legged-robot controller must distinguish and adapt across
+    at least 8 terrain classes while keeping a flat minimum over gait parameters.
+  q_summary:
+    q5_channel_capacity: lower_bound ln(M)
+    q2_posterior_sharpness: upper_bound 0（det g ≤ 1）
+  worked_example_result: q5 ≥ 2.08 nats；q2 ≤ 0
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-ADAPT-001 [类比]
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

@@ -1,0 +1,73 @@
+{
+  "pair_id": "DB3-0021",
+  "domain": "materials",
+  "language": "en",
+  "requirement_text": "The shape-memory alloy actuator must operate with reduced distance at least delta = 0.2 from the order-disorder transition, equivalently a free-energy barrier of at least 3 nats.",
+  "requirement_structured": {
+    "property_id": "stability",
+    "direction": "bound_below",
+    "target_value": {
+      "delta_dimensionless": 0.2,
+      "E_req_nats": 3
+    },
+    "rv_hint": "landau_order_parameter",
+    "constraints": [
+      "kT = 1（信息单位）"
+    ],
+    "ambiguity_flags": []
+  },
+  "rule_ids": [
+    "R-STABLE-001"
+  ],
+  "info_metric_vector": {
+    "q8_stability_margin": {
+      "direction": "lower_bound",
+      "expr": "delta 或 E_req（k_B T=1 单位，nats）",
+      "note": "Landau 双阱（a<0）：ΔF‡ = a²/(4·b·k_B T)；示例 a 按 |a| 理解"
+    }
+  },
+  "worked_example": {
+    "setup": "记忆合金（Landau 参数 a=4, b=1, k_B T=1）",
+    "given": {
+      "a": {
+        "value": 4,
+        "unit": "dimensionless",
+        "is_bridge_constant": false
+      },
+      "b": {
+        "value": 1,
+        "unit": "dimensionless",
+        "is_bridge_constant": false
+      },
+      "k_B_T": {
+        "value": 1,
+        "unit": "nats",
+        "is_bridge_constant": true
+      },
+      "E_req": {
+        "value": 3,
+        "unit": "nats",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "ΔF‡ = a²/(4·b·k_B T) = 16/4 = 4 nats",
+    "result": "ΔF‡ = 4 nats ≥ 3 nats ✓（q8 判据通过）",
+    "reference_scale": "能垒判据参考尺度：工程稳定 1–5 nats（k_B T=1 单位）；长寿命存储 40+ nats"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-STABLE-001 [推导/类比]",
+    "md/physical to ai.md 对应二：FHN 临界现象↔信息传播相变（临界点距离，ξ∝|I−I_c|^{−ν}）",
+    "md/information mechanics derivations.md B.7 稳定性分析、§29（Landau 双阱与热力学对应）"
+  ],
+  "strictness": "推导/类比",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

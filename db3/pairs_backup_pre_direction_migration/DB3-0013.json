@@ -1,0 +1,72 @@
+{
+  "pair_id": "DB3-0013",
+  "domain": "thermal",
+  "language": "zh",
+  "requirement_text": "散热片要把 5 mm 厚铜层快速导通：热锋在 5 s 内传过。",
+  "requirement_structured": {
+    "property_id": "transport",
+    "direction": "bound_below",
+    "target_value": {
+      "kappa_m2_per_s": 5e-06,
+      "length_scale_m": 0.005,
+      "front_time_s": 5
+    },
+    "rv_hint": "field_time_slices",
+    "constraints": [
+      "material = copper"
+    ],
+    "ambiguity_flags": [
+      "R-COND-001 二义性：文本未显式区分读向；缺省取读向(a) 热锋传播快（κ↑，q7↑），记录标志，禁止静默选择",
+      "若本意为细结构保真（读向 b），则 q6 上界方向相反，须人工消解后改判"
+    ]
+  },
+  "rule_ids": [
+    "R-COND-001"
+  ],
+  "info_metric_vector": {
+    "q7_info_propagation_speed": {
+      "direction": "lower_bound",
+      "expr": "kappa_req/L",
+      "reading": "a_heat_front_fast",
+      "note": "扩散锋表观速度 v≈κ/L；τ≈L²/κ"
+    }
+  },
+  "worked_example": {
+    "setup": "铜散热层 L=5 mm，热锋 5 s 传过（读向 a，缺省）",
+    "given": {
+      "L": {
+        "value": 0.005,
+        "unit": "m",
+        "is_bridge_constant": true
+      },
+      "kappa": {
+        "value": 5e-06,
+        "unit": "m^2/s",
+        "is_bridge_constant": true
+      },
+      "front_time": {
+        "value": 5,
+        "unit": "s",
+        "is_bridge_constant": true
+      }
+    },
+    "computation": "κ_req = L²/τ = (5e-3)²/5 = 5e-6 m²/s；q7 ≥ κ/L = 5e-6/5e-3",
+    "result": "q7 ≥ 1e-3 m/s",
+    "reference_scale": "q7 参考尺度：宏观热锋（良导体）1e-3–1e-1 m/s"
+  },
+  "metric_rationale": [
+    "cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]（二义性规则）、§2.3.5 例 1（一维热传导：逐模式 MI 与 DPI 裕度）",
+    "md/information mechanics derivations.md §9 锥结构与类光方程（q7=c_info 的 Fisher 锥依据）"
+  ],
+  "strictness": "推导",
+  "requires_db5_calibration": false,
+  "provenance": {
+    "source": "AI+drafted",
+    "human_review_status": "approved",
+    "anchor_eligible": true,
+    "review_date": "2026-09-30",
+    "reviewer": "reviewer+user"
+  },
+  "rules_version": "0.2.0",
+  "convention_version": "1.0.0"
+}

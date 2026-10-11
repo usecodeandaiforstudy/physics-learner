@@ -1,0 +1,31 @@
+review_record:
+  pair_id: DB3-0149
+  rule_ids:
+  - R-COND-001
+  domain: water_utility
+  strictness: 推导
+  requirement_text: 管网水质扩散锋须在 3600 s 内推进 100 m。
+  q_summary:
+    q7_info_propagation_speed: lower_bound kappa_req ≈ L²/t = 2.78 m²/s → q7 ≈ 0.0278
+      m/s
+  worked_example_result: q7 ≥ 0.0278 m/s
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-COND-001
+  ambiguity_flags:
+  - R-COND-001 二义性：文本未显式区分读向；缺省取读向(a) 热锋传播快（κ↑，q7↑），禁止静默选择（arch §2.3.8 第 2 条）
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: user
+    decision: accept
+    findings: 物理侧（表驱动批）：需求量与该域物理场景匹配、目标值与量纲经脚本核算；规则 strictness 与 rules.yaml 契约一致
+    date: '2026-10-04'
+  reviewer_b:
+    name: user
+    decision: accept
+    findings: 信息论侧（表驱动批）：q 向量与规则 q_update 一致、桥接常数标注正确；quantity_bound（物理向）与 direction（度量向）双标注自洽；R-COND
+      读向声明、R-TOUGH 的 DB5 校准标注齐备
+    date: '2026-10-04'

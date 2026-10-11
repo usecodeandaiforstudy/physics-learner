@@ -1,0 +1,54 @@
+{
+  "system_id": "sports_cushion_fatigue_life",
+  "domain": "sports",
+  "name": "缓震材料疲劳寿命",
+  "family": "weibull",
+  "equations": {
+    "latex": "p(x) = \\frac{k}{\\lambda}(x/\\lambda)^{k-1} e^{-(x/\\lambda)^k}",
+    "sympy": "p = (shape/scale)*(x/scale)**(shape-1)*exp(-(x/scale)**shape)"
+  },
+  "parameters": [
+    {
+      "name": "shape",
+      "symbol": "k",
+      "range": [
+        0.5,
+        5.0
+      ],
+      "default": 2.1
+    },
+    {
+      "name": "scale",
+      "symbol": "\\lambda",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 2.3
+    }
+  ],
+  "channel_template": "CT-WEIBULL-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "shape**2/scale**2 + ((1 - EulerGamma)**2 + pi**2/6)/shape**2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "pi**2/(6*scale**2)",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "疲劳寿命统计；sports 域实例（程序化生成，表驱动）",
+  "scan_param": "shape",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

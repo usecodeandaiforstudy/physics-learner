@@ -1,0 +1,49 @@
+{
+  "convention_id": "Q-METRIC-DEFS",
+  "convention_version": "1.0.0",
+  "created": "2026-10-02",
+  "rationale": "HANDOVER 第 88 条：外部验证（模拟器）发现 q7 的**理论定义**与**操作定义**不是同一个量，恒差 4·erfcinv(0.5)²。若不登记，边界设计会被误判（对照实验中 2/6 受影响）。本文件是 q 度量定义的**单一事实来源**，任何 q 相关的比较（DB3 需求、DB5 验证、RL 奖励）必须先查此处口径。",
+  "definitions": {
+    "q1_fisher_directional": {
+      "symbol": "q1",
+      "theoretical": "Fisher 信息（被测参数方向）：q1 = E[(∂_θ ln p)²]；多参数族取 Fisher 矩阵的迹",
+      "operational": "由 n 个观测的 score 估计器测：q1 ≈ mean_i[(∂_θ ln p(x_i))²]（多参数取迹）",
+      "relation": "operational ≈ theoretical（无系统偏差；自检验证误差 0.47–0.67%）",
+      "operational_factor": 1.0,
+      "caveat": "Cramér–Rao 界（1/q1）是**最优估计器**的界；实用估计器的可达方差可能更大（见 q_efficiency_factor）"
+    },
+    "q7_info_propagation_speed": {
+      "symbol": "q7",
+      "theoretical": "尺度估计：q7 = κ/L（扩散率 / 特征长度）",
+      "operational": "半值穿透速度：q7_op = L / t_half，其中 T(L,t_half) = T₀/2",
+      "relation": "q7_op = 4·erfcinv(0.5)² · (κ/L) ——**两者相差一个 O(1) 常数**",
+      "operational_factor": 0.9095,
+      "factor_exact": "4·erfcinv(0.5)² = 0.90954...",
+      "caveat": "该因子**只对半值判据**成立；若改用 1% 判据或别的前沿定义，因子随之改变（须重新登记）。比较需求阈值时必须声明用哪一侧：DB3 的 q7 阈值按**理论定义**登记，因此模拟器侧须乘 0.9095 后再比。",
+      "evidence": "sim/verify_designs.py DES-DIF-01：声明 κ/L=0.01（需求 0.01）→ 模拟测 0.009113 = 0.01×0.9113（数值求解器自检误差 0.16%）"
+    },
+    "q9_spectral_gap": {
+      "symbol": "q9",
+      "theoretical": "弛豫率 / 谱间隙：OU 过程 q9 = θ",
+      "operational": "由 lag-1 回归系数测：q9_op = -ln(Σx_t x_{t+1}/Σx_t²)/Δt",
+      "relation": "operational ≈ theoretical（自检验证误差 1.33%，偏差来自 Euler 离散 −θ²Δt/2）",
+      "operational_factor": 1.0,
+      "caveat": "Euler 步长导致 q9_op 略偏低（θ=0.5, Δt=0.01 时 −0.25%）；零余量设计会被该偏置翻判（见 DES-OU-01）"
+    }
+  },
+  "efficiency_factors": {
+    "note": "Cramér–Rao 界 vs 实用估计器可达精度的比值（缺口① 实用估计器臂的产出）",
+    "q_efficiency_factor": null,
+    "status": "待标定：需按估计器类型逐个标定（矩估计/直方图/MLE），当前 verify_designs 的实用臂只做示意"
+  },
+  "margin_policy": {
+    "note": "HANDOVER 第 88 条：零余量设计对实现误差不鲁棒 → 判定必须报余量而非二元值",
+    "margin_definition": "margin = q_measured / q_required − 1",
+    "classes": {
+      "robust_pass": "margin ≥ +0.10",
+      "borderline": "-0.05 ≤ margin < +0.10",
+      "robust_fail": "margin < -0.05"
+    },
+    "rationale": "数值/实现偏置量级为 0.03%–9%（本目录 definitions 中的 caveat），±5% 带覆盖常见偏置；+10% 要求设计留出实现余量"
+  }
+}

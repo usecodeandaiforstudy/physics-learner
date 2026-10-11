@@ -1,0 +1,57 @@
+{
+  "system_id": "geo_soil_conductivity_hetero",
+  "domain": "geophysics",
+  "name": "土壤电导率空间异质（乘性）",
+  "family": "lognormal",
+  "equations": {
+    "latex": "p(x) = \\frac{1}{x\\sigma\\sqrt{2\\pi}} e^{-(\\ln x-\\mu)^2/(2\\sigma^2)}",
+    "sympy": "p = exp(-(log(x)-mu)**2/(2*sigma**2))/(x*sigma*sqrt(2*pi))"
+  },
+  "parameters": [
+    {
+      "name": "mu",
+      "symbol": "\\mu",
+      "range": [
+        -2.0,
+        2.0
+      ],
+      "default": 0.0
+    },
+    {
+      "name": "sigma",
+      "symbol": "\\sigma",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 0.8
+    }
+  ],
+  "channel_template": "CT-LOGNORM-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "3/sigma**2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "2/sigma**4",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准地质统计（对数正态空间异质）；电磁法勘探",
+  "scan_param": "sigma",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

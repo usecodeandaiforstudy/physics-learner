@@ -1,0 +1,54 @@
+{
+  "system_id": "invgamma_spectral_scale",
+  "domain": "quantum",
+  "name": "功率谱尺度参数（谱估计）",
+  "family": "inverse_gamma",
+  "equations": {
+    "latex": "p(x) = \\frac{\\theta^k x^{-k-1} e^{-\\theta/x}}{\\Gamma(k)}",
+    "sympy": "p = theta**k * x**(-k-1) * exp(-theta/x) / gamma(k)"
+  },
+  "parameters": [
+    {
+      "name": "k",
+      "symbol": "k",
+      "range": [
+        0.5,
+        10.0
+      ],
+      "default": 0.9
+    },
+    {
+      "name": "theta",
+      "symbol": "\\theta",
+      "range": [
+        0.1,
+        5.0
+      ],
+      "default": 1.5
+    }
+  ],
+  "channel_template": "CT-INVGAMMA-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "polygamma(1, k) + k/theta^2",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "(k*polygamma(1, k) - 1)/theta^2",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准统计（逆伽马分布）",
+  "scan_param": "k",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}

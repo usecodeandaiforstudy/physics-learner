@@ -1,0 +1,30 @@
+review_record:
+  pair_id: DB3-0120
+  rule_ids:
+  - R-ROBUST-001
+  domain: nuclear
+  strictness: 推导
+  requirement_text: The detector must hold its resolution at 0.03 under neutron irradiation
+    drift.
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(1·9e-4) = 1111（n=1）
+  worked_example_result: q1 ≥ 1111
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-ROBUST-001
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: user
+    decision: accept
+    findings: 物理侧（表驱动批）：需求量与该域物理场景匹配、目标值与量纲经脚本核算；规则 strictness 与 rules.yaml 契约一致
+    date: '2026-10-04'
+  reviewer_b:
+    name: user
+    decision: accept
+    findings: 信息论侧（表驱动批）：q 向量与规则 q_update 一致、桥接常数标注正确；quantity_bound（物理向）与 direction（度量向）双标注自洽；R-COND
+      读向声明、R-TOUGH 的 DB5 校准标注齐备
+    date: '2026-10-04'

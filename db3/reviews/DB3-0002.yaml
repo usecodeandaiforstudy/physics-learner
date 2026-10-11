@@ -1,0 +1,30 @@
+review_record:
+  pair_id: DB3-0002
+  rule_ids:
+  - R-STIFF-001
+  domain: mechanics
+  strictness: 定理
+  requirement_text: The cantilever beam must have an effective tip stiffness of at
+    least 5 kN/m at room temperature.
+  q_summary:
+    q1_fisher_directional: lower_bound K_req/(k_B T)
+  worked_example_result: q1 ≥ 1.2e24 m^-2
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-STIFF-001 [定理]、§2.3.5
+    例 2（线性弹性谐振近似）
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

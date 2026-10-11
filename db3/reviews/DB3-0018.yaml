@@ -1,0 +1,31 @@
+review_record:
+  pair_id: DB3-0018
+  rule_ids:
+  - R-ROBUST-001
+  domain: measurement
+  strictness: 推导
+  requirement_text: 现场流量传感器在振动与温漂双干扰下，流量估计标准差不超过 2%。
+  q_summary:
+    q1_fisher_directional: lower_bound 1/(n·sigma_req^2)
+    q4_dpi_margin: lower_bound delta_dpi = 0.5 nats
+    q10_redundancy: increase >= ln(2)
+    q1_noise_direction: upper_bound lambda_max(g_eta_eta) <= epsilon
+  worked_example_result: q1 ≥ 2500；λ_max ≤ 0.05 K^-2；q4 ≥ 0.5 nats；q10 ≥ 0.693 nats
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-ROBUST-001 [推导]（方向性分离）
+  ambiguity_flags: []
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

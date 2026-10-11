@@ -1,0 +1,30 @@
+review_record:
+  pair_id: DB3-0014
+  rule_ids:
+  - R-COND-001
+  domain: thermal
+  strictness: 推导
+  requirement_text: 隔热层要保住 1 mm 尺度的温度图样：1 s 观测窗内热模糊不超过该尺度。
+  q_summary:
+    q6_correlation_length: upper_bound ell_req
+  worked_example_result: q6 ≤ 1e-3 m（κ ≤ 5e-7 m²/s）
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]（二义性规则）、§2.3.5
+    例 1（一维热传导：逐模式 MI 与 DPI 裕度）
+  ambiguity_flags:
+  - R-COND-001 二义性：文本'保住温度图样'显式指向读向(b) 细结构保真（κ↓，q6 上界）；与读向(a) 方向相反，已记录，未静默选择
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

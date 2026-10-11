@@ -1,0 +1,48 @@
+{
+  "system_id": "elevator_call_count_rate",
+  "domain": "elevator",
+  "name": "呼梯计数率",
+  "family": "poisson_count",
+  "equations": {
+    "latex": "P(n) = \\frac{\\lambda^n e^{-\\lambda}}{n!}",
+    "sympy": "P = rate**n*exp(-rate)/factorial(n)"
+  },
+  "parameters": [
+    {
+      "name": "rate",
+      "symbol": "\\lambda",
+      "range": [
+        0.1,
+        20.0
+      ],
+      "default": 8.0
+    }
+  ],
+  "channel_template": "CT-COUNT-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "1/rate",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "1/rate",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "呼梯计数；elevator 域实例（程序化生成，表驱动批次 3）",
+  "scan_param": "rate",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "spot_checked",
+    "review_date": "2026-10-07",
+    "reviewers": [
+      "reviewer"
+    ]
+  },
+  "convention_version": "1.0.0"
+}

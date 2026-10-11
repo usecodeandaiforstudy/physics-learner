@@ -1,0 +1,31 @@
+review_record:
+  pair_id: DB3-0013
+  rule_ids:
+  - R-COND-001
+  domain: thermal
+  strictness: 推导
+  requirement_text: 散热片要把 5 mm 厚铜层快速导通：热锋在 5 s 内传过。
+  q_summary:
+    q7_info_propagation_speed: lower_bound kappa_req/L
+  worked_example_result: q7 ≥ 1e-3 m/s
+  rationale_first_ref: cross domain rl architecture plan.md §2.3.3 R-COND-001 [推导]（二义性规则）、§2.3.5
+    例 1（一维热传导：逐模式 MI 与 DPI 裕度）
+  ambiguity_flags:
+  - R-COND-001 二义性：文本未显式区分读向；缺省取读向(a) 热锋传播快（κ↑，q7↑），记录标志，禁止静默选择
+  - 若本意为细结构保真（读向 b），则 q6 上界方向相反，须人工消解后改判
+  requires_db5_calibration: false
+  provenance_source: AI+drafted
+  human_review_status: approved
+  anchor_eligible: true
+  machine_gate:
+    errors: []
+  reviewer_a:
+    name: null
+    decision: null
+    findings: null
+    date: null
+  reviewer_b:
+    name: null
+    decision: null
+    findings: null
+    date: null

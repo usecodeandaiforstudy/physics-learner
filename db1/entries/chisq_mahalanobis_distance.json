@@ -1,0 +1,45 @@
+{
+  "system_id": "chisq_mahalanobis_distance",
+  "domain": "materials",
+  "name": "马氏距离平方（k 维特征离群检测）",
+  "family": "chisq",
+  "equations": {
+    "latex": "p(x) = x^{k/2-1} e^{-x/2} / (2^{k/2} \\Gamma(k/2))",
+    "sympy": "p = x**(k/2-1)*exp(-x/2)/(2**(k/2)*gamma(k/2))"
+  },
+  "parameters": [
+    {
+      "name": "k",
+      "symbol": "k",
+      "range": [
+        1.0,
+        20.0
+      ],
+      "default": 8.0
+    }
+  ],
+  "channel_template": "CT-CHISQ-001",
+  "fingerprint_expectation": [
+    {
+      "quantity": "fisher_trace",
+      "analytic": "polygamma(1, k/2)/4",
+      "tol": 1e-06
+    },
+    {
+      "quantity": "fisher_det",
+      "analytic": "polygamma(1, k/2)/4",
+      "tol": 1e-06
+    }
+  ],
+  "strictness_level": "定理",
+  "source_ref": "标准统计（卡方分布）",
+  "scan_param": "k",
+  "provenance": {
+    "source": "AI+verified",
+    "generator_model": "batch-generator-v1 (programmatic template fill)",
+    "verified_by": "analytic_compare",
+    "human_review_status": "pending",
+    "review_date": null
+  },
+  "convention_version": "1.0.0"
+}
